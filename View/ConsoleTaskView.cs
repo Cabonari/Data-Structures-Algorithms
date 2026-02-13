@@ -13,8 +13,6 @@ public class ConsoleTaskView : ITaskView
         Console.WriteLine("==== ToDo List ====");
         foreach (var task in tasks)
             Console.WriteLine($"{task}");
-
-
     }
 
     private string Prompt(string prompt)
@@ -31,9 +29,10 @@ public class ConsoleTaskView : ITaskView
 
             Console.WriteLine("\nOptions:");
             Console.WriteLine("1. Add Task");
-            Console.WriteLine("2. Remove Task");
-            Console.WriteLine("3. Toggle Task State");
-            Console.WriteLine("4. Exit");
+            Console.WriteLine("2. Update Task");
+            Console.WriteLine("3. Remove Task");
+            Console.WriteLine("4. Toggle Task State");
+            Console.WriteLine("5. Exit");
 
             string option = Prompt("Select an option: ");
 
@@ -45,14 +44,22 @@ public class ConsoleTaskView : ITaskView
                     break;
 
                 case "2":
-                    string removeIdStr = Prompt("Enter task id to remove: ");
+                    string updateIdStr = Prompt("Enter task id to update: ");
+                    if (int.TryParse(updateIdStr, out int updateId))
+                    {
+                        _service.UpdateTask(updateId);
+                    }
+                    break;
+
+                case "3":
+                    string removeIdStr = Prompt("Enter task id to update: ");
                     if (int.TryParse(removeIdStr, out int removeId))
                     {
                         _service.RemoveTask(removeId);
                     }
                     break;
 
-                case "3":
+                case "4":
                     string toggleIdStr = Prompt("Enter task id to toggle: ");
                     if (int.TryParse(toggleIdStr, out int toggleId))
                     {
@@ -60,7 +67,7 @@ public class ConsoleTaskView : ITaskView
                     }
                     break;
 
-                case "4":
+                case "5":
                     return;
 
                 default:

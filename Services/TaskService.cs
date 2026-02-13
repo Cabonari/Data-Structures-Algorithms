@@ -31,6 +31,21 @@ public class TaskService : ITaskService
         _repository.SaveTasks(_tasks);
     }
 
+    public void UpdateTask(int id)
+    {
+        var task = _tasks.Find(t => t.Id == id);
+
+        if (task != null)
+        {
+            Console.WriteLine("Enter new description: ");
+            string newDescription = Console.ReadLine();
+
+            if(newDescription != null) task.Description = newDescription;
+
+            _repository.SaveTasks(_tasks);
+        }
+    }
+
     public void RemoveTask(int id)
     {
         var task = _tasks.Find(t => t.Id == id);
