@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\rushi\\Dropbox\\Mijn pc (LAPTOP-AM2U31O1)\\Downloads\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj": {}
+    "C:\\Users\\jingv\\Desktop\\Applications\\School\\Year 2\\Semester 4\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj": {}
   },
   "projects": {
-    "c:\\Users\\rushi\\Dropbox\\Mijn pc (LAPTOP-AM2U31O1)\\Downloads\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj": {
+    "C:\\Users\\jingv\\Desktop\\Applications\\School\\Year 2\\Semester 4\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\rushi\\Dropbox\\Mijn pc (LAPTOP-AM2U31O1)\\Downloads\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj",
+        "projectUniqueName": "C:\\Users\\jingv\\Desktop\\Applications\\School\\Year 2\\Semester 4\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj",
         "projectName": "Data-Structures-Algorithms",
-        "projectPath": "c:\\Users\\rushi\\Dropbox\\Mijn pc (LAPTOP-AM2U31O1)\\Downloads\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj",
-        "packagesPath": "C:\\Users\\rushi\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\rushi\\Dropbox\\Mijn pc (LAPTOP-AM2U31O1)\\Downloads\\Data-Structures-Algorithms\\obj\\",
+        "projectPath": "C:\\Users\\jingv\\Desktop\\Applications\\School\\Year 2\\Semester 4\\Data-Structures-Algorithms\\Data-Structures-Algorithms.csproj",
+        "packagesPath": "C:\\Users\\jingv\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jingv\\Desktop\\Applications\\School\\Year 2\\Semester 4\\Data-Structures-Algorithms\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\rushi\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jingv\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -59,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.311/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

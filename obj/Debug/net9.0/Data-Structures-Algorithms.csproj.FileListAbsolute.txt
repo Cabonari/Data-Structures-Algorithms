@@ -1,0 +1,15 @@
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\bin\Debug\net9.0\Data-Structures-Algorithms.exe
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\bin\Debug\net9.0\Data-Structures-Algorithms.deps.json
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\bin\Debug\net9.0\Data-Structures-Algorithms.runtimeconfig.json
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\bin\Debug\net9.0\Data-Structures-Algorithms.dll
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\bin\Debug\net9.0\Data-Structures-Algorithms.pdb
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.AssemblyInfoInputs.cache
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.AssemblyInfo.cs
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.csproj.CoreCompileInputs.cache
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.sourcelink.json
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.dll
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\refint\Data-Structures-Algorithms.dll
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.pdb
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\Data-Structures-Algorithms.genruntimeconfig.cache
+C:\Users\jingv\Desktop\Applications\School\Year 2\Semester 4\Data-Structures-Algorithms\obj\Debug\net9.0\ref\Data-Structures-Algorithms.dll
