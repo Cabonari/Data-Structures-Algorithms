@@ -39,8 +39,9 @@ public class ConsoleTaskView : ITaskView
             switch (option)
             {
                 case "1":
+                    string priority = Prompt("Enter task priority: ");
                     string description = Prompt("Enter task description: ");
-                    _service.AddTask(description);
+                    _service.AddTask(priority, description);
                     break;
 
                 case "2":
@@ -52,7 +53,7 @@ public class ConsoleTaskView : ITaskView
                     break;
 
                 case "3":
-                    string removeIdStr = Prompt("Enter task id to update: ");
+                    string removeIdStr = Prompt("Enter task id to remove: ");
                     if (int.TryParse(removeIdStr, out int removeId))
                     {
                         _service.RemoveTask(removeId);

@@ -14,7 +14,13 @@ public class TaskService : ITaskService
         return _tasks;
     }
 
-    public void AddTask(string description)
+    private string Prompt(string prompt)
+    {
+        Console.Write(prompt);
+        return Console.ReadLine() ?? string.Empty;
+    }
+
+    public void AddTask(string priority, string description)
     {
         int newId = _tasks.Count > 0 
             ? _tasks[_tasks.Count - 1].Id + 1 
@@ -23,7 +29,9 @@ public class TaskService : ITaskService
         var newTask = new TaskItem
         {
             Id = newId,
+            Priority = priority,
             Description = description,
+            Assignees = [],
             Completed = false
         };
 
@@ -35,12 +43,20 @@ public class TaskService : ITaskService
     {
         var task = _tasks.Find(t => t.Id == id);
 
-        if (task != null)
+        if (task !=null)
         {
-            Console.WriteLine("Enter new description: ");
-            string newDescription = Console.ReadLine();
+            string newPriority = Prompt($"\nEnter new priority (was '{task.Priority}'): ");
+            if(newPriority != string.Empty) task.Priority = newPriority;
 
-            if(newDescription != null) task.Description = newDescription;
+            string newDescription = Prompt("\nEnter new description: ");
+            if(newDescription != string.Empty) task.Description = newDescription;
+
+            string newAssignees = Prompt("\nEnter new assignees (use ', ' for multiple assignees): ");
+            if(newAssignees != string.Empty)
+            {
+                string[] newAssigneesList = newAssignees.Split(", ");
+                task.Assignees = newAssigneesList.ToList();
+            }
 
             _repository.SaveTasks(_tasks);
         }
