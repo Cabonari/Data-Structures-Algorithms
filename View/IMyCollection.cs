@@ -4,7 +4,7 @@ public interface IMyCollection<T>
 
     void Remove(T item);
 
-    T FindBy<K>(K key, Func<T, K, bool> comparer);
+    T? FindBy<K>(K key, Func<T, K, int> comparer);
 
     IMyCollection<T> Filter(Func<T, bool> predicate);
 
