@@ -10,5 +10,24 @@ public class MyArray<T> : IMyCollection<T>
         _size = 0;
     }
     public int Count => _size;
+    //add function
+
+    //resize function
+
+    //remove function
+
+    //findby index function
+
+    // filter function
+
+    //sort function
+
+    //Class iterator 
+
+    //has next function
+
+    //next function
+
+    //reset function
 
 }
