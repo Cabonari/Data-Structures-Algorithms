@@ -21,7 +21,6 @@ public interface IMyCollection<T>
     // are not using System.Collections.Generic
 
     IEnumerator<T> GetEnumerator(); // Extra foreach lookup 
-
 }
 
 public interface IMyIterator<T>
@@ -30,14 +29,4 @@ public interface IMyIterator<T>
     T Next();       // Returns the next element 
 
     void Reset(); // Resets this iterator to the beginning 
-
-
 }
-
-
-
-
-
-
-
-
