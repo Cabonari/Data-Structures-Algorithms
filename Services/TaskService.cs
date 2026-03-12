@@ -1,7 +1,7 @@
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _repository;
-    private readonly IMyCollection<TaskItem> _tasks;
+    private readonly IMyCollection<TaskItem> _tasks = new MyArray<TaskItem>();
 
     public TaskService(ITaskRepository repository)
     {
