@@ -41,10 +41,20 @@ public class MyArray<T> : IMyCollection<T>
     //sort function
     public void Sort(Comparison<T> comparison)
     {
-        throw new ArgumentException();
-    }
+        for(int i = 0; i < _size - 1; i++)
+        {
+            T key = _array[i];
+            int j = i - 1;
 
-    //Class iterator 
+            while (j >= 0 && comparison(_array[j], key) > 0)
+            {
+                _array[j + 1] = _array[j];
+                j--;
+            }
+
+            _array[j + 1] = key;
+        }
+    }
 
     //has next function
     public bool HasNext()
