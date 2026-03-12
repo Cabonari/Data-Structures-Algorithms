@@ -39,7 +39,17 @@ public class MyArray<T> : IMyCollection<T>
         }
     }
     //findby index function
-
+    public T? FindBy<K>(K key, Func<T, K, int> comparer)
+    {
+        for (int i = 0; i < _size; i++)
+        {
+            if (comparer(_array[i], key) == 0)
+            {
+                return _array[i];
+            }
+        }
+        return default;
+    }
     // filter function
 
     //sort function
