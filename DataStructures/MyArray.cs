@@ -35,7 +35,30 @@ public class MyArray<T> : IMyCollection<T>
     // filter function
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        throw new ArgumentException();
+        int counter = 0;
+        for (int i = 0; i < _array.Length; i++)
+        {
+            if (predicate(_array[i]) == true)
+            {
+                counter++;
+            }
+        }
+
+        var filteredarray = new T[counter];
+        int index = 0;
+        for (int i = 0; i < _array.Length; i++)
+        {
+            if (predicate(_array[i]) == true)
+            {
+                filteredarray[index++] = _array[i];
+            }
+
+        }
+        var result = new MyArray<T>(counter);
+        result._array = filteredarray;
+        result._size = Count;
+        return result;
+        
     }
 
     //sort function
