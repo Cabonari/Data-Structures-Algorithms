@@ -15,7 +15,10 @@ public class MyArray<T> : IMyCollection<T>
     //add function
     public void Add(T item)
     {
-        throw new ArgumentException();
+        if (_index >= _data.Length - 1) return false;
+        _index++;
+        _data[_index] = key;
+        return true;
     }
 
     //resize function
@@ -24,13 +27,31 @@ public class MyArray<T> : IMyCollection<T>
     //remove function
     public void Remove(T item)
     {
-        throw new ArgumentException();
+        for (int i = 0; i < _size; i++)
+        {
+            if (_array[i] == item)
+            {
+                // Shift elements to the left
+                for (int j = i; j < _size - 1; j++)
+                {
+                    _array[j] = _array[j + 1];
+                }
+                _size--;
+                return;
+            }
+        }
     }
-
     //findby index function
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
-        throw new ArgumentException();
+        for (int i = 0; i < _size; i++)
+        {
+            if (comparer(_array[i], key) == 0)
+            {
+                return _array[i];
+            }
+        }
+        return default;
     }
     // filter function
     public IMyCollection<T> Filter(Func<T, bool> predicate)
