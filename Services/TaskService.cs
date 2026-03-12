@@ -1,7 +1,7 @@
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _repository;
-    private readonly List<TaskItem> _tasks;
+    private readonly IMyCollection<TaskItem> _tasks;
 
     public TaskService(ITaskRepository repository)
     {
@@ -14,7 +14,7 @@ public class TaskService : ITaskService
         return _tasks;
     }
 
-    private string Prompt(string prompt)
+    private static string Prompt(string prompt)
     {
         Console.Write(prompt);
         return Console.ReadLine() ?? string.Empty;
@@ -55,7 +55,7 @@ public class TaskService : ITaskService
             if(newAssignees != string.Empty)
             {
                 string[] newAssigneesList = newAssignees.Split(", ");
-                task.Assignees = newAssigneesList.ToList();
+                task.Assignees = newAssigneesList.ToArray();
             }
 
             _repository.SaveTasks(_tasks);
