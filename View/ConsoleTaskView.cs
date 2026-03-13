@@ -11,8 +11,12 @@ public class ConsoleTaskView : ITaskView
     {
         Console.Clear();
         Console.WriteLine("==== ToDo List ====");
+
         foreach (var task in tasks)
-            Console.WriteLine($"{task}");
+        {
+            string status = task.Completed ? "[X]" : "[ ]";
+            Console.WriteLine($"{status} {task.Id}: {task.Priority} - {task.Description}");
+        }
     }
 
     private string Prompt(string prompt)
