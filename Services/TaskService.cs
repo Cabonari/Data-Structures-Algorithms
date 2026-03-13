@@ -1,12 +1,12 @@
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _repository;
-    private readonly MyArray<TaskItem> _tasks = new MyArray<TaskItem>();
+    private readonly IMyCollection<TaskItem> _tasks = new MyArray<TaskItem>();
 
     public TaskService(ITaskRepository repository)
     {
         _repository = repository;
-        _tasks = (MyArray<TaskItem>)repository.LoadTasks();
+        _tasks = repository.LoadTasks();
     }
 
     public IEnumerable<TaskItem> GetAllTasks()
