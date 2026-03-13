@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 public class MyArray<T> : IMyCollection<T>
 {
     private T[] _array;
