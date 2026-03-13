@@ -21,9 +21,6 @@ public class MyArray<T> : IMyCollection<T>
         return true;
     }
 
-    //resize function
-
-
     //remove function
     public void Remove(T item)
     {
@@ -113,7 +110,7 @@ public class MyArray<T> : IMyCollection<T>
     //reset function
     public void Reset()
     {
-        throw new ArgumentException();
+        Array.Clear(_array, 0, _array.Length);
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator)
