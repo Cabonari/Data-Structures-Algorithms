@@ -58,7 +58,7 @@ public class MyArray<T> : IMyCollection<T>
         result._array = filteredarray;
         result._size = Count;
         return result;
-        
+
     }
 
     //sort function
@@ -87,13 +87,26 @@ public class MyArray<T> : IMyCollection<T>
 
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        throw new ArgumentException();
+        R acc = default; ;
+        for (int i = 0; i < _array.Length; i++)
+        {
+            acc = accumulator(acc, _array[i]);
+        }
+        return acc;
 
     }
 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        throw new ArgumentException();
+
+        R acc = initial;
+        for (int i = 0; i < _size; i++)
+        {
+            acc = accumulator(acc, _array[i]);
+        }
+
+        return acc;
+
     }
 
     public IMyIterator<T> GetMyIterator()
