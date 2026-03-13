@@ -15,13 +15,21 @@ public class JsonTaskRepository : ITaskRepository
             return new MyArray<TaskItem>();
 
         string json = File.ReadAllText(_filePath);
-        var tasks = JsonSerializer.Deserialize<IMyCollection<TaskItem>>(json);
-        return tasks ?? new MyArray<TaskItem>();
+        var list = JsonSerializer.Deserialize<List<TaskItem>>(json) ?? new List<TaskItem>();
+        var result = new MyArray<TaskItem>(Math.Max(list.Count, 10));
+        foreach (var task in list)
+            result.Add(task);
+        return result;
     }
 
     public void SaveTasks(IMyCollection<TaskItem> tasks)
     {
-        string json = JsonSerializer.Serialize(tasks,
+        var list = new List<TaskItem>();
+        var iterator = tasks.GetMyIterator();
+        while (iterator.HasNext())
+            list.Add(iterator.Next());
+
+        string json = JsonSerializer.Serialize(list,
         new JsonSerializerOptions
         {
             WriteIndented = true

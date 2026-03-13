@@ -15,11 +15,9 @@ public class MyArray<T> : IMyCollection<T>
     //add function
     public void Add(T item)
     {
-        if (_size >= _array.Length)
-        {
-            return;
-        }
+        if (_size >= _array.Length) return;
         _array[_size] = item;
+        
         _size++;
     }
 
