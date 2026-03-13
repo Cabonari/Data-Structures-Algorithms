@@ -38,7 +38,8 @@ public class TaskService : ITaskService
             Priority = priority,
             Description = description,
             Completed = false,
-            Assignees = Array.Empty<string>()
+            Assignees = Array.Empty<string>(),
+            Row = "TODO"
         };
         _tasks.Add(newTask);
         _repository.SaveTasks(_tasks);
