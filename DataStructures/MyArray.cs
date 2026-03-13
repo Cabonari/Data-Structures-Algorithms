@@ -24,9 +24,14 @@ public class MyArray<T> : IMyCollection<T>
     //remove function
     public void Remove(T item)
     {
+        if (_array.Length == 0)
+        {
+            return;
+        }
+
         for (int i = 0; i < _size; i++)
         {
-            if (_array[i] == item)
+            if (_array[i].Equals(item))
             {
                 // Shift elements to the left
                 for (int j = i; j < _size - 1; j++)
@@ -82,7 +87,7 @@ public class MyArray<T> : IMyCollection<T>
     //sort function
     public void Sort(Comparison<T> comparison)
     {
-        for(int i = 0; i < _size - 1; i++)
+        for (int i = 0; i < _size - 1; i++)
         {
             T key = _array[i];
             int j = i - 1;
