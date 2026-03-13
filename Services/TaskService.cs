@@ -29,7 +29,9 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description)
     {
-        int newId = _tasks.Count > 0 ? _tasks.FindBy(_tasks.Count - 1, (t, key) => t.Id.CompareTo(key)).Id + 1 : 1;
+        int newId = _tasks.Count;
+        while(_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
+
         var newTask = new TaskItem
         {
             Id = newId,
