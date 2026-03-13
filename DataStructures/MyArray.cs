@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 public class MyArray<T> : IMyCollection<T>
 {
     private T[] _array;
@@ -15,9 +17,9 @@ public class MyArray<T> : IMyCollection<T>
     //add function
     public void Add(T item)
     {
-        if (_index >= _data.Length - 1) return false;
-        _index++;
-        _data[_index] = key;
+        if (_size >= _array.Length - 1) return false;
+        _size++;
+        _array[_size - 1] = item;
         return true;
     }
 
