@@ -15,11 +15,14 @@ public class MyArray<T> : IMyCollection<T>
     //add function
     public void Add(T item)
     {
-        if (_size >= _array.Length - 1) return false;
+        if (_size >= _array.Length)
+        {
+            return;
+        }
+        _array[_size] = item;
         _size++;
-        _array[_size - 1] = item;
-        return true;
     }
+
 
     //remove function
     public void Remove(T item)
