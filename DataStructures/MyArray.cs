@@ -102,16 +102,6 @@ public class MyArray<T> : IMyCollection<T>
         }
     }
 
-    //has next function
-    public bool HasNext()
-    {
-        throw new ArgumentException();
-    }
-    //next function
-    public T Next()
-    {
-        throw new ArgumentException();
-    }
     //reset function
     public void Reset()
     {
