@@ -14,7 +14,7 @@ public class ConsoleTaskView : ITaskView
 
         foreach (var task in tasks)
         {
-            string status = task.Completed ? "[X]" : "[ ]";
+            string status = task.Completed ? "{V]" : "[ ]";
             Console.WriteLine($"{status} {task.Id}: {task.Priority} - {task.Description}");
         }
     }
