@@ -1,6 +1,4 @@
-
 using System.Text.Json;
-
 
 public class JsonTaskRepository : ITaskRepository
 {
@@ -11,17 +9,17 @@ public class JsonTaskRepository : ITaskRepository
         _filePath = filePath;
     }
 
-    // public List<TaskItem> LoadTasks()
-    // {
-    //     if (!File.Exists(_filePath))
-    //         return new List<TaskItem>();
+    public IMyCollection<TaskItem> LoadTasks()
+    {
+        if (!File.Exists(_filePath))
+            return new MyArray<TaskItem>();
 
-    //     string json = File.ReadAllText(_filePath);
-    //     var tasks = JsonSerializer.Deserialize<List<TaskItem>>(json);
-    //     return tasks ?? new List<TaskItem>();
-    // }
+        string json = File.ReadAllText(_filePath);
+        var tasks = JsonSerializer.Deserialize<IMyCollection<TaskItem>>(json);
+        return tasks ?? new MyArray<TaskItem>();
+    }
 
-    public void SaveTasks(List<TaskItem> tasks)
+    public void SaveTasks(IMyCollection<TaskItem> tasks)
     {
         string json = JsonSerializer.Serialize(tasks,
         new JsonSerializerOptions
