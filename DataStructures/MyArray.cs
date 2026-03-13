@@ -108,7 +108,7 @@ public class MyArray<T> : IMyCollection<T>
     //reset function
     public void Reset()
     {
-        Array.Clear(_array, 0, _array.Length);
+        for (int i = 0; i < _size; i++) _array[i] = default(T);
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator)
