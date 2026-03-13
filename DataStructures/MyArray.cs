@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 public class MyArray<T> : IMyCollection<T>
 {
     private T[] _array;
@@ -15,9 +17,9 @@ public class MyArray<T> : IMyCollection<T>
     //add function
     public void Add(T item)
     {
-        if (_index >= _data.Length - 1) return false;
-        _index++;
-        _data[_index] = key;
+        if (_size >= _array.Length - 1) return false;
+        _size++;
+        _array[_size - 1] = item;
         return true;
     }
 
@@ -144,11 +146,46 @@ public class MyArray<T> : IMyCollection<T>
 
     public IMyIterator<T> GetMyIterator()
     {
-        throw new ArgumentException();
+        return new MyIterator<T>(_array, _size);
     }
 
     public IEnumerator<T> GetEnumerator()
     {
-        throw new ArgumentException();
+        for (int i = 0; i < _size; i++)
+        {
+            yield return _array[i];
+        }
+    }
+}
+public class MyIterator<T> : IMyIterator<T>
+{
+    private T[] _array;
+    private int _size;
+    private int _currentIndex;
+
+    public MyIterator(T[] array, int size)
+    {
+        _array = array;
+        _size = size;
+        _currentIndex = 0;
+    }
+    //has next function
+    public bool HasNext()
+    {
+        return _currentIndex < _size;
+    }
+    //next function
+    public T Next()
+    {
+        if (!HasNext())
+        {
+            throw new InvalidOperationException("No more elements in the collection.");
+        }
+        return _array[_currentIndex++];
+    }
+    //reset function
+    public void Reset()
+    {
+        _currentIndex = 0;
     }
 }
