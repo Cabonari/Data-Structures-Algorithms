@@ -21,9 +21,6 @@ public class MyArray<T> : IMyCollection<T>
         return true;
     }
 
-    //resize function
-
-
     //remove function
     public void Remove(T item)
     {
@@ -100,15 +97,44 @@ public class MyArray<T> : IMyCollection<T>
         }
     }
 
-    public R Reduce<R>(Func<R, T, R> accumulator)
+    //has next function
+    public bool HasNext()
     {
         throw new ArgumentException();
+    }
+    //next function
+    public T Next()
+    {
+        throw new ArgumentException();
+    }
+    //reset function
+    public void Reset()
+    {
+        Array.Clear(_array, 0, _array.Length);
+    }
+
+    public R Reduce<R>(Func<R, T, R> accumulator)
+    {
+        R acc = default; ;
+        for (int i = 0; i < _array.Length; i++)
+        {
+            acc = accumulator(acc, _array[i]);
+        }
+        return acc;
 
     }
 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        throw new ArgumentException();
+
+        R acc = initial;
+        for (int i = 0; i < _size; i++)
+        {
+            acc = accumulator(acc, _array[i]);
+        }
+
+        return acc;
+
     }
 
     public IMyIterator<T> GetMyIterator()
