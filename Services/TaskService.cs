@@ -1,12 +1,12 @@
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _repository;
-    private readonly MyArray<TaskItem> _tasks = new MyArray<TaskItem>();
+    private readonly IMyCollection<TaskItem> _tasks = new MyArray<TaskItem>();
 
     public TaskService(ITaskRepository repository)
     {
         _repository = repository;
-        _tasks = (MyArray<TaskItem>)repository.LoadTasks();
+        _tasks = repository.LoadTasks();
     }
 
     public IEnumerable<TaskItem> GetAllTasks()
@@ -29,7 +29,9 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description)
     {
-        int newId = _tasks.Count > 0 ? _tasks.FindBy(_tasks.Count - 1, (t, key) => t.Id.CompareTo(key)).Id + 1 : 1;
+        int newId = _tasks.Count;
+        while(_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
+
         var newTask = new TaskItem
         {
             Id = newId,
