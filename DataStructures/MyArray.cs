@@ -79,13 +79,13 @@ public class MyArray<T> : IMyCollection<T>
         result._array = filteredarray;
         result._size = Count;
         return result;
-        
+
     }
 
     //sort function
     public void Sort(Comparison<T> comparison)
     {
-        for(int i = 0; i < _size - 1; i++)
+        for (int i = 0; i < _size - 1; i++)
         {
             T key = _array[i];
             int j = i - 1;
@@ -98,22 +98,6 @@ public class MyArray<T> : IMyCollection<T>
 
             _array[j + 1] = key;
         }
-    }
-
-    //has next function
-    public bool HasNext()
-    {
-        throw new ArgumentException();
-    }
-    //next function
-    public T Next()
-    {
-        throw new ArgumentException();
-    }
-    //reset function
-    public void Reset()
-    {
-        throw new ArgumentException();
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator)
@@ -129,11 +113,46 @@ public class MyArray<T> : IMyCollection<T>
 
     public IMyIterator<T> GetMyIterator()
     {
-        throw new ArgumentException();
+        return new MyIterator<T>(_array, _size);
     }
 
     public IEnumerator<T> GetEnumerator()
     {
-        throw new ArgumentException();
+        for (int i = 0; i < _size; i++)
+        {
+            yield return _array[i];
+        }
+    }
+}
+public class MyIterator<T> : IMyIterator<T>
+{
+    private T[] _array;
+    private int _size;
+    private int _currentIndex;
+
+    public MyIterator(T[] array, int size)
+    {
+        _array = array;
+        _size = size;
+        _currentIndex = 0;
+    }
+    //has next function
+    public bool HasNext()
+    {
+        return _currentIndex < _size;
+    }
+    //next function
+    public T Next()
+    {
+        if (!HasNext())
+        {
+            throw new InvalidOperationException("No more elements in the collection.");
+        }
+        return _array[_currentIndex++];
+    }
+    //reset function
+    public void Reset()
+    {
+        _currentIndex = 0;
     }
 }
