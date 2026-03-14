@@ -1,6 +1,4 @@
 obj/*
-obj/Debug/net9.0/Data-Structures-Algorithms.AssemblyInfoInputs.cache
-obj/Debug/net9.0/Data-Structures-Algorithms.AssemblyInfo.cs
 
 bin/Debug/net9.0/Data-Structures-Algorithms.dll
 bin/Debug/net9.0/Data-Structures-Algorithms.pdb
@@ -9,3 +7,5 @@ bin/Debug/net9.0/Data-Structures-Algorithms.deps.json
 bin/Debug/net9.0/Data-Structures-Algorithms.runtimeconfig.json
 
 bin/Debug/net9.0/tasks.json
+obj/Debug/net9.0/Data-Structures-Algorithms.AssemblyInfo.cs
+obj/Debug/net9.0/Data-Structures-Algorithms.AssemblyInfoInputs.cache
