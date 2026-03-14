@@ -8,8 +8,6 @@
         ITaskService service = new TaskService(repository);
         ITaskView view = new ConsoleTaskView(service);
 
-
         view.Run();
-
     }
 }

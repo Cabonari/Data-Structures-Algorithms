@@ -30,7 +30,7 @@ public class TaskService : ITaskService
     public void AddTask(string priority, string description)
     {
         int newId = _tasks.Count;
-        while(_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
+        while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
 
         var newTask = new TaskItem
         {
@@ -38,7 +38,8 @@ public class TaskService : ITaskService
             Priority = priority,
             Description = description,
             Completed = false,
-            Assignees = Array.Empty<string>()
+            Assignees = [],
+            Row = "TODO"
         };
         _tasks.Add(newTask);
         _repository.SaveTasks(_tasks);
@@ -53,10 +54,27 @@ public class TaskService : ITaskService
             string newPriority = Prompt($"\nEnter new priority (was '{task.Priority}'): ");
             if (newPriority != string.Empty) task.Priority = newPriority;
 
-            string newDescription = Prompt("\nEnter new description: ");
+            string newDescription = Prompt($"\nEnter new description (was '{task.Description}'): ");
             if (newDescription != string.Empty) task.Description = newDescription;
 
-            string newAssignees = Prompt("\nEnter new assignees (use ', ' for multiple assignees): ");
+            int newRow;
+            string rowInput;
+            do
+            {
+                rowInput = Prompt($"\nEnter new row (was '{task.Row}'): \n1. TODO\n2. Doing\n3. Review\n4. Done\n");
+            }
+            while (!int.TryParse(rowInput, out newRow) || newRow < 1 || newRow > 4);
+
+            task.Row = newRow switch
+            {
+                1 => "TODO",
+                2 => "Doing",
+                3 => "Review",
+                4 => "Done",
+                _ => task.Row
+            };
+
+            string newAssignees = Prompt($"\nEnter new assignees'): ");
             if (newAssignees != string.Empty)
             {
                 string[] newAssigneesList = newAssignees.Split(", ");
