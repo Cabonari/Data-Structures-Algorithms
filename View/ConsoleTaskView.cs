@@ -26,27 +26,30 @@ public class ConsoleTaskView : ITaskView
 
         foreach (var task in tasks)
         {
-            switch(task.Row)
+            string taskText = $"{task.Id}: {task.Priority} - {task.Description}";
+            int padding = (colWidth - taskText.Length) / 2;
+
+            switch (task.Row)
             {
                 case "TODO":
+                    Console.SetCursorPosition(Math.Max(0, padding), 3 + todoCount);
                     todoCount++;
                     break;
                 case "Doing":
+                    Console.SetCursorPosition(Math.Max(colWidth, colWidth + padding), 3 + doingCount);
                     doingCount++;
                     break;
                 case "Review":
+                    Console.SetCursorPosition(Math.Max(colWidth * 2, colWidth * 2 + padding), 3 + reviewCount);
                     reviewCount++;
                     break;
                 case "Done":
+                    Console.SetCursorPosition(Math.Max(colWidth * 3, colWidth * 3 + padding), 3 + doneCount);
                     doneCount++;
                     break;
             }
 
-
-            
-
-            // string status = task.Completed ? "[V]" : "[ ]";
-            // Console.WriteLine($"{status} {task.Id}: {task.Priority} - {task.Description}");
+            Console.WriteLine(taskText);
         }
     }
 
