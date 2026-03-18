@@ -39,11 +39,10 @@ public class ConsoleTaskView : ITaskView
         while (true)
         {
             DisplayTasks(_service.GetAllTasks());
-            Console.SetCursorPosition(0, windowHeight - 6);
 
-            int padding = 2;
+            Console.SetCursorPosition(0, windowHeight - 6);
             Console.WriteLine("\n\nOptions:");
-            Console.WriteLine(new string("1. Add Task".PadRight(colWidth - padding) + "2. Update Task".PadRight(colWidth - padding) + "3. Remove Task".PadRight(colWidth - padding) + "4. Toggle Task".PadRight(colWidth - padding) + "5. Exit".PadRight(colWidth - padding)));
+            Console.WriteLine(new string("1. Add Task".PadRight(colWidth - 2) + "2. Update Task".PadRight(colWidth - 2) + "3. Remove Task".PadRight(colWidth - 2) + "4. Toggle Task".PadRight(colWidth - 2) + "5. Exit".PadRight(colWidth - 2)));
 
             string option = Prompt("Select an option: ");
 
