@@ -6,6 +6,5 @@ public class TaskItem
     public string[]? Assignees { get; set; }
     public string Row { get; set; }
 
-    public bool Completed { get; set; }
     public DateTime Date { get; set; }
 }

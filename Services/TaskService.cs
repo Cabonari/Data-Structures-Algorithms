@@ -11,13 +11,9 @@ public class TaskService : ITaskService
 
     public IEnumerable<TaskItem> GetAllTasks()
     {
-        for (int i = 0; i < _tasks.Count; i++)
+        foreach (var task in _tasks)
         {
-            var task = _tasks.FindBy(i + 1, (t, key) => t.Id.CompareTo(key));
-            if (task != null)
-            {
-                yield return task;
-            }
+            yield return task;
         }
     }
 
@@ -29,7 +25,7 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description)
     {
-        int newId = _tasks.Count + 1;
+        int newId = 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
 
         var newTask = new TaskItem
@@ -37,7 +33,6 @@ public class TaskService : ITaskService
             Id = newId,
             Priority = priority,
             Description = description,
-            Completed = false,
             Date = DateTime.Now,
             Assignees = [],
             Row = "TODO"
@@ -57,23 +52,6 @@ public class TaskService : ITaskService
 
             string newDescription = Prompt($"\nEnter new description (was '{task.Description}'): ");
             if (newDescription != string.Empty) task.Description = newDescription;
-
-            int newRow;
-            string rowInput;
-            do
-            {
-                rowInput = Prompt($"\nEnter new row (was '{task.Row}'): \n1. TODO\n2. Doing\n3. Review\n4. Done\n");
-            }
-            while (!int.TryParse(rowInput, out newRow) || newRow < 1 || newRow > 4);
-
-            task.Row = newRow switch
-            {
-                1 => "TODO",
-                2 => "Doing",
-                3 => "Review",
-                4 => "Done",
-                _ => task.Row
-            };
 
             string newAssignees = Prompt($"\nEnter new assignees'): ");
             if (newAssignees != string.Empty)
@@ -101,10 +79,21 @@ public class TaskService : ITaskService
     {
         var task = _tasks.FindBy(id, (t, key) => t.Id.CompareTo(key));
 
-        if (task != null)
+        int newRow;
+        string rowInput;
+        do
         {
-            task.Completed = !task.Completed;
-            _repository.SaveTasks(_tasks);
+            rowInput = Prompt($"\nEnter new row (was '{task!.Row}'): \n1. TODO\n2. Doing\n3. Review\n4. Done\n");
         }
+        while (!int.TryParse(rowInput, out newRow) || newRow < 1 || newRow > 4);
+
+        task.Row = newRow switch
+        {
+            1 => "TODO",
+            2 => "Doing",
+            3 => "Review",
+            4 => "Done",
+            _ => task.Row
+        };
     }
 }

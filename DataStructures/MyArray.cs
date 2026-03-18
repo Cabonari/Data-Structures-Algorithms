@@ -34,7 +34,6 @@ public class MyArray<T> : IMyCollection<T>
         {
             if (_array[i].Equals(item))
             {
-                // Shift elements to the left
                 for (int j = i; j < _size - 1; j++)
                 {
                     _array[j] = _array[j + 1];

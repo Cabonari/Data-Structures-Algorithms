@@ -19,10 +19,37 @@ public class ConsoleTaskView : ITaskView
 
         // eigen groupBy method moet aangemaakt worden.
 
+        int todoCount = 0;
+        int doingCount = 0;
+        int reviewCount = 0;
+        int doneCount = 0;
+
         foreach (var task in tasks)
         {
-            string status = task.Completed ? "[V]" : "[ ]";
-            Console.WriteLine($"{status} {task.Id}: {task.Priority} - {task.Description}");
+            string taskText = $"{task.Id}: {task.Priority} - {task.Description}";
+            int padding = (colWidth - taskText.Length) / 2;
+
+            switch (task.Row)
+            {
+                case "TODO":
+                    Console.SetCursorPosition(Math.Max(0, padding), 3 + todoCount);
+                    todoCount++;
+                    break;
+                case "Doing":
+                    Console.SetCursorPosition(Math.Max(colWidth, colWidth + padding), 3 + doingCount);
+                    doingCount++;
+                    break;
+                case "Review":
+                    Console.SetCursorPosition(Math.Max(colWidth * 2, colWidth * 2 + padding), 3 + reviewCount);
+                    reviewCount++;
+                    break;
+                case "Done":
+                    Console.SetCursorPosition(Math.Max(colWidth * 3, colWidth * 3 + padding), 3 + doneCount);
+                    doneCount++;
+                    break;
+            }
+
+            Console.WriteLine(taskText);
         }
     }
 
