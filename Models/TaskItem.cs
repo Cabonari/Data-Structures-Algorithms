@@ -7,4 +7,5 @@ public class TaskItem
     public string Row { get; set; }
 
     public bool Completed { get; set; }
+    public DateTime Date { get; set; }
 }

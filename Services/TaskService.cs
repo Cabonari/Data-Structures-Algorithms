@@ -13,7 +13,7 @@ public class TaskService : ITaskService
     {
         for (int i = 0; i < _tasks.Count; i++)
         {
-            var task = _tasks.FindBy(i, (t, key) => t.Id.CompareTo(key));
+            var task = _tasks.FindBy(i + 1, (t, key) => t.Id.CompareTo(key));
             if (task != null)
             {
                 yield return task;
@@ -29,7 +29,7 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description)
     {
-        int newId = _tasks.Count;
+        int newId = _tasks.Count + 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
 
         var newTask = new TaskItem
@@ -38,6 +38,7 @@ public class TaskService : ITaskService
             Priority = priority,
             Description = description,
             Completed = false,
+            Date = DateTime.Now,
             Assignees = [],
             Row = "TODO"
         };
