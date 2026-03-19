@@ -11,7 +11,10 @@ public class TaskService : ITaskService
 
     public IEnumerable<TaskItem> GetAllTasks()
     {
-        return _tasks;
+        foreach (var task in _tasks)
+        {
+            yield return task;
+        }
     }
 
     private static string Prompt(string prompt)
@@ -22,37 +25,36 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description)
     {
-        int newId = _tasks.Count > 0 
-            ? _tasks[_tasks.Count - 1].Id + 1 
-            : 1;
+        int newId = 1;
+        while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
 
         var newTask = new TaskItem
         {
             Id = newId,
             Priority = priority,
             Description = description,
+            Date = DateTime.Now,
             Assignees = [],
-            Completed = false
+            Row = "TODO"
         };
-
         _tasks.Add(newTask);
         _repository.SaveTasks(_tasks);
     }
 
     public void UpdateTask(int id)
     {
-        var task = _tasks.Find(t => t.Id == id);
+        var task = _tasks.FindBy(id, (t, key) => t.Id.CompareTo(key));
 
-        if (task !=null)
+        if (task != null)
         {
             string newPriority = Prompt($"\nEnter new priority (was '{task.Priority}'): ");
-            if(newPriority != string.Empty) task.Priority = newPriority;
+            if (newPriority != string.Empty) task.Priority = newPriority;
 
-            string newDescription = Prompt("\nEnter new description: ");
-            if(newDescription != string.Empty) task.Description = newDescription;
+            string newDescription = Prompt($"\nEnter new description (was '{task.Description}'): ");
+            if (newDescription != string.Empty) task.Description = newDescription;
 
-            string newAssignees = Prompt("\nEnter new assignees (use ', ' for multiple assignees): ");
-            if(newAssignees != string.Empty)
+            string newAssignees = Prompt($"\nEnter new assignees'): ");
+            if (newAssignees != string.Empty)
             {
                 string[] newAssigneesList = newAssignees.Split(", ");
                 task.Assignees = newAssigneesList.ToArray();
@@ -64,7 +66,7 @@ public class TaskService : ITaskService
 
     public void RemoveTask(int id)
     {
-        var task = _tasks.Find(t => t.Id == id);
+        var task = _tasks.FindBy(id, (t, key) => t.Id.CompareTo(key));
 
         if (task != null)
         {
@@ -75,12 +77,23 @@ public class TaskService : ITaskService
 
     public void ToggleTaskCompletion(int id)
     {
-        var task = _tasks.Find(t => t.Id == id);
+        var task = _tasks.FindBy(id, (t, key) => t.Id.CompareTo(key));
 
-        if (task != null)
+        int newRow;
+        string rowInput;
+        do
         {
-            task.Completed = !task.Completed;
-            _repository.SaveTasks(_tasks);
+            rowInput = Prompt($"\nEnter new row (was '{task!.Row}'): \n1. TODO\n2. Doing\n3. Review\n4. Done\n");
         }
+        while (!int.TryParse(rowInput, out newRow) || newRow < 1 || newRow > 4);
+
+        task.Row = newRow switch
+        {
+            1 => "TODO",
+            2 => "Doing",
+            3 => "Review",
+            4 => "Done",
+            _ => task.Row
+        };
     }
 }

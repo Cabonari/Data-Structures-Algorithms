@@ -15,20 +15,25 @@ public class MyArray<T> : IMyCollection<T>
     //add function
     public void Add(T item)
     {
-        if (_index >= _data.Length - 1) return false;
-        _index++;
-        _data[_index] = key;
-        return true;
+        if (_size >= _array.Length) return;
+        _array[_size] = item;
+        
+        _size++;
     }
+
 
     //remove function
     public void Remove(T item)
     {
+        if (_array.Length == 0)
+        {
+            return;
+        }
+
         for (int i = 0; i < _size; i++)
         {
-            if (_array[i] == item)
+            if (_array[i].Equals(item))
             {
-                // Shift elements to the left
                 for (int j = i; j < _size - 1; j++)
                 {
                     _array[j] = _array[j + 1];
@@ -97,20 +102,10 @@ public class MyArray<T> : IMyCollection<T>
         }
     }
 
-    //has next function
-    public bool HasNext()
-    {
-        throw new ArgumentException();
-    }
-    //next function
-    public T Next()
-    {
-        throw new ArgumentException();
-    }
     //reset function
     public void Reset()
     {
-        Array.Clear(_array, 0, _array.Length);
+        for (int i = 0; i < _size; i++) _array[i] = default(T);
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator)

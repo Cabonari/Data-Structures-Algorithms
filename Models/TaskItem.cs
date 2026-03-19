@@ -4,6 +4,7 @@ public class TaskItem
     public required string Priority { get; set; }
     public required string Description { get; set; }
     public string[]? Assignees { get; set; }
+    public string Row { get; set; }
 
-    public bool Completed { get; set; }
+    public DateTime Date { get; set; }
 }
