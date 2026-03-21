@@ -10,14 +10,19 @@ public class ConsoleTaskView : ITaskView
         _service = service;
     }
 
+    private static void FullClear()
+    {
+        try { Console.Write("\u001b[2J\u001b[H\u001b[3J"); }
+        catch { Console.Clear(); }
+    }
+
     private void DisplayTasks(IEnumerable<TaskItem> tasks)
     {
-        Console.Clear();
+        FullClear();
+
         Console.WriteLine("Task List".PadLeft((windowWidth + 9) / 2));
         Console.WriteLine(new string('-', windowWidth));
-        Console.WriteLine(new string("TODO".PadLeft((colWidth + 4) / 2).PadRight(colWidth) + "Doing".PadLeft((colWidth + 5) / 2).PadRight(colWidth) + "Review".PadLeft((colWidth + 6) / 2).PadRight(colWidth) + "DONE".PadLeft((colWidth + 4) / 2).PadRight(colWidth)));
-
-        // eigen groupBy method moet aangemaakt worden.
+        Console.WriteLine(new string("TODO".PadLeft((colWidth + 4) / 2).PadRight(colWidth) + "Doing".PadLeft((colWidth + 5) / 2).PadRight(colWidth) + "Review".PadLeft((colWidth + 6) / 2).PadRight(colWidth) + "Done".PadLeft((colWidth + 4) / 2).PadRight(colWidth)));
 
         int todoCount = 0;
         int doingCount = 0;
@@ -27,6 +32,7 @@ public class ConsoleTaskView : ITaskView
         foreach (var task in tasks)
         {
             string taskText = $"{task.Id}: {task.Priority} - {task.Description}";
+            if(taskText.Length > colWidth - colWidth / 4) taskText = string.Concat(taskText.AsSpan(0, colWidth - colWidth / 4), "...");
             int padding = (colWidth - taskText.Length) / 2;
 
             switch (task.Row)

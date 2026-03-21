@@ -78,22 +78,31 @@ public class TaskService : ITaskService
     public void ToggleTaskCompletion(int id)
     {
         var task = _tasks.FindBy(id, (t, key) => t.Id.CompareTo(key));
-
-        int newRow;
-        string rowInput;
-        do
+        if (task == null) Console.WriteLine("Task not found.");
+        else
         {
-            rowInput = Prompt($"\nEnter new row (was '{task!.Row}'): \n1. TODO\n2. Doing\n3. Review\n4. Done\n");
+            switch (task.Row)
+            {
+                case "TODO":
+                    task.Row = "Doing";
+                    break;
+                case "Doing":
+                    task.Row = "Review";
+                    break;
+                case "Review":
+                    task.Row = "Done";
+                    break;
+                case "Done":
+                    Console.WriteLine("Task is already in 'Done' state.");
+                    Console.ReadLine();
+                    break;
+                default:
+                    Console.WriteLine("Something went wrong :/");
+                    Console.ReadLine();
+                    break;
+            }
+
+            _repository.SaveTasks(_tasks);
         }
-        while (!int.TryParse(rowInput, out newRow) || newRow < 1 || newRow > 4);
-
-        task.Row = newRow switch
-        {
-            1 => "TODO",
-            2 => "Doing",
-            3 => "Review",
-            4 => "Done",
-            _ => task.Row
-        };
     }
 }
