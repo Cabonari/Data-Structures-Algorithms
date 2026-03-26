@@ -2,20 +2,22 @@ using System.Runtime.ExceptionServices;
 
 public class MyLinkedList<T> : IMyCollection<T>
 {
-    private Node[] _linkedList;
+    private Node? head;
     private int _size;
-    public MyLinkedList(int capacity = 10)
-    {
-        _linkedList = new Node[capacity];
-        _size = 0;
-    }
 
-    class Node(T data)
+    private class Node
     {
-        public T Data = data;
-        public Node Next = null;
-    }
+        public T Data;
+        public Node? Next;
 
+        // Constructor
+        public Node(T data)
+        {
+            Data = data;
+            Next = null;
+        }
+    }
+    
     public int Count => _size;
 
     public bool Dirty { get; set; }
@@ -92,11 +94,11 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
 
     //reset function
-    public void Reset()    
+    public void Reset()
     {
-        for(int i = 0; i < _size; i++)
+        for (int i = 0; i < _size; i++)
         {
-            _linkedList[i].Data = default(T); 
+            _linkedList[i].Data = default(T);
         }
     }
 
@@ -107,7 +109,12 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        throw new NotImplementedException();
+        R res = initial;
+        for (int i = 0; i < _size; i++)
+        {
+            res = accumulator(res, _linkedList[i].Data);
+        }
+        return res;
     }
 
     public IMyIterator<T> GetMyIterator()
