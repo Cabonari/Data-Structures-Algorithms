@@ -17,7 +17,7 @@ public class MyLinkedList<T> : IMyCollection<T>
             Next = null;
         }
     }
-    
+
     public int Count => _size;
 
     public bool Dirty { get; set; }
@@ -96,10 +96,13 @@ public class MyLinkedList<T> : IMyCollection<T>
     //reset function
     public void Reset()
     {
-        for (int i = 0; i < _size; i++)
+        var current = head;
+        while (current != null)
         {
-            _linkedList[i].Data = default(T);
+            current.Data = default(T);
+            current = current.Next;
         }
+
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator)
