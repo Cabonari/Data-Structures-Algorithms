@@ -32,7 +32,28 @@ public class MyLinkedList<T> : IMyCollection<T>
     //remove function
     public void Remove(T item)
     {
-        throw new NotImplementedException();
+        if (_size == 0) return;
+        
+        // Handle removal of first node
+        if (_linkedList[0].Data.Equals(item))
+        {
+            _linkedList[0] = _linkedList[0].Next;
+            _size--;
+            return;
+        }
+        
+        // Handle removal of subsequent nodes
+        Node current = _linkedList[0];
+        while (current?.Next != null)
+        {
+            if (current.Next.Data.Equals(item))
+            {
+                current.Next = current.Next.Next;
+                _size--;
+                return;
+            }
+            current = current.Next;
+        }
     }
 
     //findby index function
