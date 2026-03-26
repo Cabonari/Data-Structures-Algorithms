@@ -1,3 +1,5 @@
+using System.Runtime.ExceptionServices;
+
 public class MyLinkedList<T> : IMyCollection<T>
 {
     private Node[] _linkedList;
@@ -33,7 +35,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     public void Remove(T item)
     {
         if (_size == 0) return;
-        
+
         // Handle removal of first node
         if (_linkedList[0].Data.Equals(item))
         {
@@ -41,7 +43,7 @@ public class MyLinkedList<T> : IMyCollection<T>
             _size--;
             return;
         }
-        
+
         // Handle removal of subsequent nodes
         Node current = _linkedList[0];
         while (current?.Next != null)
@@ -59,13 +61,28 @@ public class MyLinkedList<T> : IMyCollection<T>
     //findby index function
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
-        throw new NotImplementedException();
+        for (int i = 0; i <= _linkedList.Length; i++)
+        {
+            if (comparer(_linkedList[i].Data, key) == 0)
+            {
+                return _linkedList[i].Data;
+            }
+        }
+        return default(T);
     }
 
     // filter function
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        throw new NotImplementedException();
+        MyLinkedList<T> filtered = new MyLinkedList<T>();
+        for (int i = 0; i < _linkedList.Length; i++)
+        {
+            if (predicate(_linkedList[i].Data))
+            {
+                filtered.Add(_linkedList[i].Data);
+            }
+        }
+        return filtered;
     }
 
     //sort function
