@@ -75,9 +75,12 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
 
     //reset function
-    public void Reset()
+    public void Reset()    
     {
-        throw new NotImplementedException();
+        for(int i = 0; i < _size; i++)
+        {
+            _linkedList[i].Data = default(T); 
+        }
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator)
