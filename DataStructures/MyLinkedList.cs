@@ -125,12 +125,17 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        R res = initial;
-        for (int i = 0; i < _size; i++)
+        R result = initial;
+        Node? current = head;
+
+        while (current != null)
         {
-            res = accumulator(res, _linkedList[i].Data);
+            result = accumulator(result, current.Data);
+            current = current.Next;
         }
-        return res;
+
+        return result;
+
     }
 
     public IMyIterator<T> GetMyIterator()
