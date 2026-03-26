@@ -103,7 +103,29 @@ public class MyLinkedList<T> : IMyCollection<T>
     //sort function
     public void Sort(Comparison<T> comparison)
     {
-        throw new NotImplementedException();
+        if (_size <= 1 || head == null) return;
+
+        bool swapped;
+        do
+        {
+            swapped = false;
+            Node? current = head;
+
+            while (current?.Next != null)
+            {
+                if (comparison(current.Data, current.Next.Data) > 0)
+                {
+                    T tempData = current.Data;
+                    current.Data = current.Next.Data;
+                    current.Next.Data = tempData;
+                    swapped = true;
+                }
+
+                current = current.Next;
+            }
+        } while (swapped);
+
+        Dirty = false;
     }
 
     //reset function
@@ -146,9 +168,12 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public IEnumerator<T> GetEnumerator()
     {
-        for (int i = 0; i < _size; i++)
+        var current = head;
+
+        while (current != null)
         {
-            yield return _linkedList[i].Data;
+            yield return current.Data;
+            current = current.Next;
         }
     }
 }
