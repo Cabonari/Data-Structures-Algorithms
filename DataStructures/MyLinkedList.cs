@@ -2,18 +2,20 @@ using System.Runtime.ExceptionServices;
 
 public class MyLinkedList<T> : IMyCollection<T>
 {
-    private Node[] _linkedList;
+    private Node? head;
     private int _size;
-    public MyLinkedList(int capacity = 10)
-    {
-        _linkedList = new Node[capacity];
-        _size = 0;
-    }
 
-    class Node(T data)
+    private class Node
     {
-        public T Data = data;
-        public Node Next = null;
+        public T Data;
+        public Node? Next;
+
+        // Constructor
+        public Node(T data)
+        {
+            Data = data;
+            Next = null;
+        }
     }
 
     public int Count => _size;
@@ -23,11 +25,20 @@ public class MyLinkedList<T> : IMyCollection<T>
     //add function
     public void Add(T item)
     {
-        if (_size >= _linkedList.Length)
+        Node newNode = new Node(item);
+        if (head == null)
         {
-            return;
+            head = newNode;
         }
-        _linkedList[_size] = new Node(item);
+        else
+        {
+            Node current = head;
+            while (current.Next != null)
+            {
+                current = current.Next;
+            }
+            current.Next = newNode;
+        }
         _size++;
     }
 
@@ -37,15 +48,15 @@ public class MyLinkedList<T> : IMyCollection<T>
         if (_size == 0) return;
 
         // Handle removal of first node
-        if (_linkedList[0].Data.Equals(item))
+        if (head?.Data.Equals(item) == true)
         {
-            _linkedList[0] = _linkedList[0].Next;
+            head = head.Next;
             _size--;
             return;
         }
 
         // Handle removal of subsequent nodes
-        Node current = _linkedList[0];
+        Node current = head;
         while (current?.Next != null)
         {
             if (current.Next.Data.Equals(item))
@@ -61,12 +72,14 @@ public class MyLinkedList<T> : IMyCollection<T>
     //findby index function
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
-        for (int i = 0; i <= _linkedList.Length; i++)
+        Node current = head;
+        while (current != null)
         {
-            if (comparer(_linkedList[i].Data, key) == 0)
+            if (comparer(current.Data, key) == 0)
             {
-                return _linkedList[i].Data;
+                return current.Data;
             }
+            current = current.Next;
         }
         return default(T);
     }
@@ -75,12 +88,14 @@ public class MyLinkedList<T> : IMyCollection<T>
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
         MyLinkedList<T> filtered = new MyLinkedList<T>();
-        for (int i = 0; i < _linkedList.Length; i++)
+        Node current = head;
+        while (current != null)
         {
-            if (predicate(_linkedList[i].Data))
+            if (predicate(current.Data))
             {
-                filtered.Add(_linkedList[i].Data);
+                filtered.Add(current.Data);
             }
+            current = current.Next;
         }
         return filtered;
     }
@@ -88,13 +103,41 @@ public class MyLinkedList<T> : IMyCollection<T>
     //sort function
     public void Sort(Comparison<T> comparison)
     {
-        throw new NotImplementedException();
+        if (_size <= 1 || head == null) return;
+
+        bool swapped;
+        do
+        {
+            swapped = false;
+            Node? current = head;
+
+            while (current?.Next != null)
+            {
+                if (comparison(current.Data, current.Next.Data) > 0)
+                {
+                    T tempData = current.Data;
+                    current.Data = current.Next.Data;
+                    current.Next.Data = tempData;
+                    swapped = true;
+                }
+
+                current = current.Next;
+            }
+        } while (swapped);
+
+        Dirty = false;
     }
 
     //reset function
     public void Reset()
     {
-        throw new NotImplementedException();
+        var current = head;
+        while (current != null)
+        {
+            current.Data = default(T);
+            current = current.Next;
+        }
+
     }
 
     public R Reduce<R>(Func<R, T, R> accumulator)
@@ -104,7 +147,17 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        throw new NotImplementedException();
+        R result = initial;
+        Node? current = head;
+
+        while (current != null)
+        {
+            result = accumulator(result, current.Data);
+            current = current.Next;
+        }
+
+        return result;
+
     }
 
     public IMyIterator<T> GetMyIterator()
@@ -115,9 +168,12 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public IEnumerator<T> GetEnumerator()
     {
-        for (int i = 0; i < _size; i++)
+        var current = head;
+
+        while (current != null)
         {
-            yield return _linkedList[i].Data;
+            yield return current.Data;
+            current = current.Next;
         }
     }
 }
