@@ -1,25 +1,37 @@
-
-public class MyBinarySearchTree<T> : IMyCollection<T>
+public class MyBinarySearchTree<T> : IMyCollection<T> where T : class, IComparable<T>
 {
+    public T value;
+    public MyBinarySearchTree<T>? left;
+    public MyBinarySearchTree<T>? right;
 
-    public int label;
-    public MyBinarySearchTree<T> left;
-    public MyBinarySearchTree<T> right;
-
-    public MyBinarySearchTree(int data)
+    public MyBinarySearchTree(T data)
     {
-        label = data;
-        left = null;
-        right = null;
+        value = data;
     }
+    public int Count =>
+    1 +
+    (left?.Count ?? 0) +
+    (right?.Count ?? 0);
 
-    public int Count => throw new NotImplementedException();
-
-    public bool Dirty { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    private bool dirty;
+    public bool Dirty { get => dirty; set => dirty = value; }
 
     public void Add(T item)
     {
-        throw new NotImplementedException();
+        if (item.CompareTo(value) < 0)
+        {
+            if (left == null)
+                left = new MyBinarySearchTree<T>(item);
+            else
+                left.Add(item);
+        }
+        else
+        {
+            if (right == null)
+                right = new MyBinarySearchTree<T>(item);
+            else
+                right.Add(item);
+        }
     }
 
     public IMyCollection<T> Filter(Func<T, bool> predicate)
@@ -29,7 +41,14 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
 
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
-        throw new NotImplementedException();
+        int cmp = comparer(value, key);
+
+        if (cmp == 0)
+            return value;
+        else if (cmp > 0)
+            return left?.FindBy(key, comparer);
+        else
+            return right?.FindBy(key, comparer);
     }
 
     public IEnumerator<T> GetEnumerator()
