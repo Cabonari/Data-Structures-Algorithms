@@ -1,4 +1,4 @@
-public class MyBinarySearchTree<T> : IMyCollection<T> where T : class, IComparable<T>
+public class MyBinarySearchTree<T> : IMyCollection<T>
 {
     public T value;
     public MyBinarySearchTree<T>? left;
@@ -8,6 +8,12 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : class, IComparab
     {
         value = data;
     }
+
+    public MyBinarySearchTree()
+    {
+        //voor lege tree
+    }
+
     public int Count => 1 + (left?.Count ?? 0) + (right?.Count ?? 0);
 
     private bool dirty;
@@ -15,7 +21,13 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : class, IComparab
 
     public void Add(T item)
     {
-        if (item.CompareTo(value) < 0)
+        if (value == null)
+        {
+            value = item;
+            return;
+        }
+
+        if (Comparer<T>.Default.Compare(item, value) < 0)
         {
             if (left == null)
                 left = new MyBinarySearchTree<T>(item);
@@ -33,7 +45,31 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : class, IComparab
 
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        throw new NotImplementedException();
+        MyBinarySearchTree<T>? result = null;
+
+        void AddIfMatch(T item)
+        {
+            if (predicate(item))
+            {
+                if (result == null)
+                    result = new MyBinarySearchTree<T>(item);
+                else
+                    result.Add(item);
+            }
+        }
+
+        void Traverse(MyBinarySearchTree<T>? node)
+        {
+            if (node == null) return;
+
+            AddIfMatch(node.value);
+            Traverse(node.left);
+            Traverse(node.right);
+        }
+
+        Traverse(this);
+
+        return result!;
     }
 
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
