@@ -19,6 +19,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
     private bool dirty;
     public bool Dirty { get => dirty; set => dirty = value; }
 
+    // Julian 
     public void Add(T item)
     {
         if (value == null)
@@ -43,6 +44,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         }
     }
 
+    // Julian 
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
         MyBinarySearchTree<T>? result = null;
@@ -72,6 +74,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         return result!;
     }
 
+    // Julian 
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
         int cmp = comparer(value, key);
@@ -84,33 +87,43 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
             return right.FindBy(key, comparer);
     }
 
+    // Rushil 
     public IEnumerator<T> GetEnumerator()
     {
         throw new NotImplementedException();
     }
-
+    // Rushil 
     public IMyIterator<T> GetMyIterator()
     {
         throw new NotImplementedException();
     }
 
+    // Rushil 
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
         throw new NotImplementedException();
     }
 
+    // Rushil 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
         throw new NotImplementedException();
     }
 
+    // Jing 
     public void Remove(T item)
     {
         throw new NotImplementedException();
     }
-
+    
+    // rushil 
     public void Sort(Comparison<T> comparison)
     {
         throw new NotImplementedException();
     }
 }
+
+
+
+
+
