@@ -8,10 +8,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : class, IComparab
     {
         value = data;
     }
-    public int Count =>
-    1 +
-    (left?.Count ?? 0) +
-    (right?.Count ?? 0);
+    public int Count => 1 + (left?.Count ?? 0) + (right?.Count ?? 0);
 
     private bool dirty;
     public bool Dirty { get => dirty; set => dirty = value; }
@@ -46,9 +43,9 @@ public class MyBinarySearchTree<T> : IMyCollection<T> where T : class, IComparab
         if (cmp == 0)
             return value;
         else if (cmp > 0)
-            return left?.FindBy(key, comparer);
+            return left.FindBy(key, comparer);
         else
-            return right?.FindBy(key, comparer);
+            return right.FindBy(key, comparer);
     }
 
     public IEnumerator<T> GetEnumerator()
