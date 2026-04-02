@@ -2,11 +2,11 @@
 public class MyBinarySearchTree<T> : IMyCollection<T>
 {
 
-    public int label;
+    public T label;
     public MyBinarySearchTree<T> left;
     public MyBinarySearchTree<T> right;
 
-    public MyBinarySearchTree(int data)
+    public MyBinarySearchTree(T data)
     {
         label = data;
         left = null;
@@ -70,3 +70,8 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         throw new NotImplementedException();
     }
 }
+
+
+
+
+
