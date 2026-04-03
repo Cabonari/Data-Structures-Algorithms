@@ -73,10 +73,17 @@ public class ConsoleTaskView : ITaskView
         {
             DisplayTasks(_service.GetAllTasks());
 
-            Console.SetCursorPosition(0, windowHeight - 6);
-            Console.WriteLine("\n\nOptions:");
-            Console.WriteLine(new string("1. Add Task".PadRight(colWidth - 2) + "2. Update Task".PadRight(colWidth - 2) + "3. Remove Task".PadRight(colWidth - 2) + "4. Toggle Task".PadRight(colWidth - 2) + "5. Exit".PadRight(colWidth - 2)));
 
+            // Show user 
+            Console.SetCursorPosition(0, windowHeight - 8);
+            Console.WriteLine($"Current user: {_service.CurrentUser}");
+
+            // Menu 
+            Console.SetCursorPosition(0, windowHeight - 7);
+            Console.WriteLine("\n\nOptions:");
+            Console.WriteLine("1. Add Task     2. Update Task     3. Remove Task");
+            Console.WriteLine("4. Toggle Task  5. Exit            6. Change User");
+            Console.WriteLine();
             string option = Prompt("Select an option: ");
 
             switch (option)
@@ -119,10 +126,15 @@ public class ConsoleTaskView : ITaskView
                 case "5":
                     return;
 
+                case "6":
+                    string user = Prompt("Enter username: ");
+                    _service.ChangeUser(user);
+                    break;
                 default:
                     Console.WriteLine("Invalid option. Press any key to continue...");
                     Console.ReadKey();
                     break;
+
             }
         }
     }
