@@ -32,7 +32,7 @@ public class ConsoleTaskView : ITaskView
         foreach (var task in tasks)
         {
             string taskText = $"{task.Id}: {task.Priority} - {task.Description}";
-            if(taskText.Length > colWidth - colWidth / 4) taskText = string.Concat(taskText.AsSpan(0, colWidth - colWidth / 4), "...");
+            if (taskText.Length > colWidth - colWidth / 4) taskText = string.Concat(taskText.AsSpan(0, colWidth - colWidth / 4), "...");
             int padding = (colWidth - taskText.Length) / 2;
 
             switch (task.Row)
@@ -84,7 +84,12 @@ public class ConsoleTaskView : ITaskView
                 case "1":
                     string priority = Prompt("Enter task priority: ");
                     string description = Prompt("Enter task description: ");
-                    _service.AddTask(priority, description);
+                    string assigneesInput = Prompt("Enter assignees (comma separated):");
+
+                    string[] assignees = string.IsNullOrWhiteSpace(assigneesInput)
+                        ? []
+                        : assigneesInput.Split(", ");
+                    _service.AddTask(priority, description, assignees);
                     break;
 
                 case "2":
