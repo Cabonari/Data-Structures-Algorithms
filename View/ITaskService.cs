@@ -5,4 +5,8 @@ public interface ITaskService
     void UpdateTask(int id);
     void RemoveTask(int id);
     void ToggleTaskCompletion(int id);
+
+    void ChangeUser(string user); 
+
+    string CurrentUser {get;}
 }
