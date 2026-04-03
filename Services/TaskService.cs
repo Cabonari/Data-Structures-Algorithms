@@ -23,7 +23,7 @@ public class TaskService : ITaskService
         return Console.ReadLine() ?? string.Empty;
     }
 
-    public void AddTask(string priority, string description)
+    public void AddTask(string priority, string description, string[] assignees)
     {
         int newId = 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
@@ -34,7 +34,7 @@ public class TaskService : ITaskService
             Priority = priority,
             Description = description,
             Date = DateTime.Now,
-            Assignees = [],
+            Assignees = assignees,
             Row = "TODO"
         };
         _tasks.Add(newTask);
