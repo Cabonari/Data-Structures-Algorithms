@@ -1,7 +1,9 @@
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _repository;
-    private readonly IMyCollection<TaskItem> _tasks = new MyArray<TaskItem>();
+    private readonly IMyCollection<TaskItem> _tasks = new MyBinarySearchTree<TaskItem>();
+
+    public string CurrentUser { get; private set; } = "";
 
     public TaskService(ITaskRepository repository)
     {
@@ -23,7 +25,7 @@ public class TaskService : ITaskService
         return Console.ReadLine() ?? string.Empty;
     }
 
-    public void AddTask(string priority, string description)
+    public void AddTask(string priority, string description, string[] assignees)
     {
         int newId = 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
@@ -34,7 +36,7 @@ public class TaskService : ITaskService
             Priority = priority,
             Description = description,
             Date = DateTime.Now,
-            Assignees = [],
+            Assignees = assignees,
             Row = "TODO"
         };
         _tasks.Add(newTask);
@@ -47,6 +49,16 @@ public class TaskService : ITaskService
 
         if (task != null)
         {
+
+            // Permission Check 
+            if (!task.Assignees.Contains(CurrentUser))
+            {
+                Console.WriteLine("You are not assigned to this task.");
+                Console.ReadKey();
+                return;
+            }
+
+
             string newPriority = Prompt($"\nEnter new priority (was '{task.Priority}'): ");
             if (newPriority != string.Empty) task.Priority = newPriority;
 
@@ -68,41 +80,72 @@ public class TaskService : ITaskService
     {
         var task = _tasks.FindBy(id, (t, key) => t.Id.CompareTo(key));
 
-        if (task != null)
+        if (task == null)
         {
-            _tasks.Remove(task);
-            _repository.SaveTasks(_tasks);
+            Console.WriteLine("Task not found.");
+            Console.ReadKey();
+            return;
         }
+
+        // Permission check 
+        if (!task.Assignees.Contains(CurrentUser))
+        {
+            Console.WriteLine("You are not assigned to this task.");
+            Console.ReadKey();
+            return;
+        }
+
+        _tasks.Remove(task);
+        _repository.SaveTasks(_tasks);
+
     }
 
     public void ToggleTaskCompletion(int id)
     {
         var task = _tasks.FindBy(id, (t, key) => t.Id.CompareTo(key));
-        if (task == null) Console.WriteLine("Task not found.");
-        else
-        {
-            switch (task.Row)
-            {
-                case "TODO":
-                    task.Row = "Doing";
-                    break;
-                case "Doing":
-                    task.Row = "Review";
-                    break;
-                case "Review":
-                    task.Row = "Done";
-                    break;
-                case "Done":
-                    Console.WriteLine("Task is already in 'Done' state.");
-                    Console.ReadLine();
-                    break;
-                default:
-                    Console.WriteLine("Something went wrong :/");
-                    Console.ReadLine();
-                    break;
-            }
 
-            _repository.SaveTasks(_tasks);
+        if (task == null)
+        {
+            Console.WriteLine("Task not found.");
+            Console.ReadKey();
+            return;
         }
+
+        // Permission check 
+        if (!task.Assignees.Contains(CurrentUser))
+        {
+            Console.WriteLine("You are not assigned to this task.");
+            Console.ReadKey();
+            return;
+        }
+
+        switch (task.Row)
+        {
+            case "TODO":
+                task.Row = "Doing";
+                break;
+            case "Doing":
+                task.Row = "Review";
+                break;
+            case "Review":
+                task.Row = "Done";
+                break;
+            case "Done":
+                Console.WriteLine("Task is already in 'Done' state.");
+                Console.ReadKey();
+                break;
+            default:
+                Console.WriteLine("Something went wrong :/");
+                Console.ReadKey();
+                break;
+        }
+
+        _repository.SaveTasks(_tasks);
     }
+
+    public void ChangeUser(string user)
+    {
+        CurrentUser = user;
+    }
+
 }

@@ -32,7 +32,7 @@ public class ConsoleTaskView : ITaskView
         foreach (var task in tasks)
         {
             string taskText = $"{task.Id}: {task.Priority} - {task.Description}";
-            if(taskText.Length > colWidth - colWidth / 4) taskText = string.Concat(taskText.AsSpan(0, colWidth - colWidth / 4), "...");
+            if (taskText.Length > colWidth - colWidth / 4) taskText = string.Concat(taskText.AsSpan(0, colWidth - colWidth / 4), "...");
             int padding = (colWidth - taskText.Length) / 2;
 
             switch (task.Row)
@@ -73,10 +73,17 @@ public class ConsoleTaskView : ITaskView
         {
             DisplayTasks(_service.GetAllTasks());
 
-            Console.SetCursorPosition(0, windowHeight - 6);
-            Console.WriteLine("\n\nOptions:");
-            Console.WriteLine(new string("1. Add Task".PadRight(colWidth - 2) + "2. Update Task".PadRight(colWidth - 2) + "3. Remove Task".PadRight(colWidth - 2) + "4. Toggle Task".PadRight(colWidth - 2) + "5. Exit".PadRight(colWidth - 2)));
 
+            // Show user 
+            Console.SetCursorPosition(0, windowHeight - 8);
+            Console.WriteLine($"Current user: {_service.CurrentUser}");
+
+            // Menu 
+            Console.SetCursorPosition(0, windowHeight - 7);
+            Console.WriteLine("\n\nOptions:");
+            Console.WriteLine("1. Add Task     2. Update Task     3. Remove Task");
+            Console.WriteLine("4. Toggle Task  5. Exit            6. Change User");
+            Console.WriteLine();
             string option = Prompt("Select an option: ");
 
             switch (option)
@@ -84,7 +91,12 @@ public class ConsoleTaskView : ITaskView
                 case "1":
                     string priority = Prompt("Enter task priority: ");
                     string description = Prompt("Enter task description: ");
-                    _service.AddTask(priority, description);
+                    string assigneesInput = Prompt("Enter assignees (comma separated):");
+
+                    string[] assignees = string.IsNullOrWhiteSpace(assigneesInput)
+                        ? []
+                        : assigneesInput.Split(", ");
+                    _service.AddTask(priority, description, assignees);
                     break;
 
                 case "2":
@@ -114,10 +126,15 @@ public class ConsoleTaskView : ITaskView
                 case "5":
                     return;
 
+                case "6":
+                    string user = Prompt("Enter username: ");
+                    _service.ChangeUser(user);
+                    break;
                 default:
                     Console.WriteLine("Invalid option. Press any key to continue...");
                     Console.ReadKey();
                     break;
+
             }
         }
     }
