@@ -116,11 +116,11 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         MyBinarySearchTree<T>? current = this;
         MyBinarySearchTree<T>? parent = null;
 
-        while (current != null && current.label!.Equals(item))
+        while (current != null && current.value!.Equals(item))
         {
             parent = current;
 
-            if (Comparer<T>.Default.Compare(item, current.label) < 0) current = current.left;
+            if (Comparer<T>.Default.Compare(item, current.value) < 0) current = current.left;
             else current = current.right;
         }
 
@@ -144,7 +144,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
                 successor = successor.left;
             }
 
-            current.label = successor.label;
+            current.value = successor.value;
 
             if (successorParent.left == successor) successorParent.left = successor.right;
             else successorParent.right = successor.right;
