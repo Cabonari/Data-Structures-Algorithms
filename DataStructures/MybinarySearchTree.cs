@@ -113,7 +113,42 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
     // Jing 
     public void Remove(T item)
     {
-        throw new NotImplementedException();
+        MyBinarySearchTree<T>? current = this;
+        MyBinarySearchTree<T>? parent = null;
+
+        while (current != null && current.value!.Equals(item))
+        {
+            parent = current;
+
+            if (Comparer<T>.Default.Compare(item, current.value) < 0) current = current.left;
+            else current = current.right;
+        }
+
+        if (current == null) return;
+
+        if (current.left == null || current.right == null)
+        {
+            MyBinarySearchTree<T>? child = current.left ?? current.right;
+
+            if(parent.left == current) parent.left = child;
+            else parent.right = child;
+        }
+        else
+        {
+            MyBinarySearchTree<T> successorParent = current;
+            MyBinarySearchTree<T> successor = current.right;
+
+            while (successor.left != null)
+            {
+                successorParent = successor;
+                successor = successor.left;
+            }
+
+            current.value = successor.value;
+
+            if (successorParent.left == successor) successorParent.left = successor.right;
+            else successorParent.right = successor.right;
+        }
     }
     
     // rushil 

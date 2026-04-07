@@ -40,14 +40,6 @@
     "Date": "2026-03-21T17:43:12.4751691+01:00"
   },
   {
-    "Id": 6,
-    "Priority": "Medium",
-    "Description": "He who does not eat, will not eat",
-    "Assignees": [],
-    "Row": "TODO",
-    "Date": "2026-03-21T17:46:59.7107265+01:00"
-  },
-  {
     "Id": 7,
     "Priority": "mega high",
     "Description": "eating",
