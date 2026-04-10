@@ -116,7 +116,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         MyBinarySearchTree<T>? current = this;
         MyBinarySearchTree<T>? parent = null;
 
-        while (current != null && current.value!.Equals(item))
+        while (current != null && Comparer<T>.Default.Compare(current.value, item) != 0)
         {
             parent = current;
 
@@ -126,14 +126,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
 
         if (current == null) return;
 
-        if (current.left == null || current.right == null)
-        {
-            MyBinarySearchTree<T>? child = current.left ?? current.right;
-
-            if(parent.left == current) parent.left = child;
-            else parent.right = child;
-        }
-        else
+        if (current.left != null && current.right != null)
         {
             MyBinarySearchTree<T> successorParent = current;
             MyBinarySearchTree<T> successor = current.right;
@@ -148,9 +141,36 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
 
             if (successorParent.left == successor) successorParent.left = successor.right;
             else successorParent.right = successor.right;
+
+            return;
+        }
+
+        MyBinarySearchTree<T>? child = current.left ?? current.right;
+
+        if (parent == null)
+        {
+            if (child == null)
+            {
+                value = default!;
+                left = null;
+                right = null;
+            }
+
+            else
+            {
+                value = child.value;
+                left = child.left;
+                right = child.right;
+            }
+        }
+
+        else
+        {
+            if (parent.left == current) parent.left = child;
+            else parent.right = child;
         }
     }
-    
+
     // rushil 
     public void Sort(Comparison<T> comparison)
     {

@@ -91,12 +91,16 @@ public class ConsoleTaskView : ITaskView
                 case "1":
                     string priority = Prompt("Enter task priority: ");
                     string description = Prompt("Enter task description: ");
-                    string assigneesInput = Prompt("Enter assignees (comma separated):");
+                    string assigneesInput = Prompt("Enter assignees (comma separated): ");
+                    string dependenciesInput = Prompt("Enter dependencies by ID (comma separated): ");
 
                     string[] assignees = string.IsNullOrWhiteSpace(assigneesInput)
                         ? []
                         : assigneesInput.Split(", ");
-                    _service.AddTask(priority, description, assignees);
+                    int[] dependencies = string.IsNullOrWhiteSpace(dependenciesInput)
+                        ? []
+                        : dependenciesInput.Split(", ").Select(int.Parse).ToArray();
+                    _service.AddTask(priority, description, assignees, dependencies);
                     break;
 
                 case "2":
