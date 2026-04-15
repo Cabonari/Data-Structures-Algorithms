@@ -142,7 +142,23 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        throw new NotImplementedException();
+        if (head == null)
+            throw new InvalidOperationException("Collection is empty");
+
+        Node current = head;
+
+        // Eerste element gebruiken als startwaarde
+        R result = (R)(object)current.Data;
+
+        current = current.Next;
+
+        while (current != null)
+        {
+            result = accumulator(result, current.Data);
+            current = current.Next;
+        }
+
+        return result;
     }
 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
