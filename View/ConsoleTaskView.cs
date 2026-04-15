@@ -173,7 +173,7 @@ public class ConsoleTaskView : ITaskView
             Console.WriteLine($"Current user: {_service.CurrentUser}");
 
             // Menu 
-            Console.SetCursorPosition(0, windowHeight - 7);
+            Console.SetCursorPosition(0, windowHeight - 8);
             Console.WriteLine("\n\nOptions:");
             Console.WriteLine("1. Add Task     2. Update Task     3. Remove Task");
             Console.WriteLine("4. Toggle Task  5. Exit            6. Change User");
