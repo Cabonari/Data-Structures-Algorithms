@@ -179,7 +179,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     public IMyIterator<T> GetMyIterator()
     {
         // return new MyIterator<T>(_linkedList, _size);
-        throw new NotImplementedException();
+        return new MyIterator(head);
     }
 
     public IEnumerator<T> GetEnumerator()
@@ -190,6 +190,49 @@ public class MyLinkedList<T> : IMyCollection<T>
         {
             yield return current.Data;
             current = current.Next;
+        }
+    }
+
+    private class MyIterator : IMyIterator<T>
+    {
+        private Node? _current;
+        private readonly Node? _head;
+
+        public MyIterator(Node? head)
+        {
+            _head = head;
+            _current = null;
+        }
+
+        public bool HasNext()
+        {
+            if (_current == null)
+                return _head != null;
+
+            return _current.Next != null;
+        }
+
+        public T Next()
+        {
+            if (_current == null)
+            {
+                if (_head == null)
+                    throw new InvalidOperationException("List is empty.");
+
+                _current = _head;
+                return _current.Data;
+            }
+
+            if (_current.Next == null)
+                throw new InvalidOperationException("No more elements.");
+
+            _current = _current.Next;
+            return _current.Data;
+        }
+
+        public void Reset()
+        {
+            _current = null;
         }
     }
 }
