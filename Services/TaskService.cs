@@ -1,7 +1,7 @@
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _repository;
-    private readonly IMyCollection<TaskItem> _tasks = new MyBinarySearchTree<TaskItem>();
+    private readonly IMyCollection<TaskItem> _tasks = new MyHashMap<TaskItem>();
 
     public string CurrentUser { get; private set; } = "";
 

@@ -16,7 +16,7 @@ public class JsonTaskRepository : ITaskRepository
 
         string json = File.ReadAllText(_filePath);
         var list = JsonSerializer.Deserialize<List<TaskItem>>(json) ?? new List<TaskItem>();
-        var result = new MyArray<TaskItem>(Math.Max(list.Count, 10));
+        var result = new MyArray<TaskItem>(Math.Max(list.Count, 20));
         foreach (var task in list)
             result.Add(task);
         return result;
