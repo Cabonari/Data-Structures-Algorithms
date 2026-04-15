@@ -65,6 +65,100 @@ public class ConsoleTaskView : ITaskView
         return Console.ReadLine() ?? string.Empty;
     }
 
+    private void ShowFilterMenu()
+    {
+        FullClear();
+        Console.WriteLine("Filter Tasks");
+        Console.WriteLine(new string('-', windowWidth));
+        Console.WriteLine("1. By Priority");
+        Console.WriteLine("2. By Status");
+        Console.WriteLine("3. By Creation Date");
+        Console.WriteLine("4. Back");
+        Console.WriteLine();
+
+        string filterOption = Prompt("Select a filter option: ");
+        IEnumerable<TaskItem> filteredTasks;
+
+        switch (filterOption)
+        {
+            case "1":
+                filteredTasks = FilterByPriority();
+                break;
+            case "2":
+                filteredTasks = FilterByStatus();
+                break;
+            case "3":
+                filteredTasks = FilterByCreationDate();
+                break;
+            default:
+                return;
+        }
+
+        DisplayTasks(filteredTasks);
+        Console.WriteLine();
+        Console.WriteLine("Press any key to return to the main menu...");
+        Console.ReadKey();
+    }
+
+    private IEnumerable<TaskItem> FilterByPriority()
+    {
+        string priority = Prompt("Enter task priority to filter by: ");
+        if (string.IsNullOrWhiteSpace(priority))
+        {
+            Console.WriteLine("Priority cannot be empty. Press any key to continue...");
+            Console.ReadKey();
+            return _service.GetAllTasks();
+        }
+
+        return _service.GetTasksByPriority(priority);
+    }
+
+    private IEnumerable<TaskItem> FilterByStatus()
+    {
+        string status = Prompt("Enter task status to filter by (TODO, Doing, Review, Done): ");
+        if (string.IsNullOrWhiteSpace(status))
+        {
+            Console.WriteLine("Status cannot be empty. Press any key to continue...");
+            Console.ReadKey();
+            return _service.GetAllTasks();
+        }
+
+        return _service.GetTasksByStatus(status);
+    }
+
+    private IEnumerable<TaskItem> FilterByCreationDate()
+    {
+        string startInput = Prompt("Enter start date (yyyy-MM-dd) or leave blank: ");
+        string endInput = Prompt("Enter end date (yyyy-MM-dd) or leave blank: ");
+
+        DateTime? startDate = null;
+        DateTime? endDate = null;
+
+        if (!string.IsNullOrWhiteSpace(startInput) && !DateTime.TryParse(startInput, out DateTime start))
+        {
+            Console.WriteLine("Invalid start date format. Press any key to continue...");
+            Console.ReadKey();
+            return _service.GetAllTasks();
+        }
+
+        if (!string.IsNullOrWhiteSpace(endInput) && !DateTime.TryParse(endInput, out DateTime end))
+        {
+            Console.WriteLine("Invalid end date format. Press any key to continue...");
+            Console.ReadKey();
+            return _service.GetAllTasks();
+        }
+
+        if (!string.IsNullOrWhiteSpace(startInput))
+            startDate = DateTime.Parse(startInput).Date;
+
+        if (!string.IsNullOrWhiteSpace(endInput))
+            endDate = DateTime.Parse(endInput).Date.AddDays(1).AddTicks(-1);
+        else if (startDate.HasValue)
+            endDate = startDate.Value.Date.AddDays(1).AddTicks(-1);
+
+        return _service.GetTasksByDateRange(startDate, endDate);
+    }
+
     public void Run()
     {
         Console.SetBufferSize(windowWidth, windowHeight);
@@ -83,6 +177,7 @@ public class ConsoleTaskView : ITaskView
             Console.WriteLine("\n\nOptions:");
             Console.WriteLine("1. Add Task     2. Update Task     3. Remove Task");
             Console.WriteLine("4. Toggle Task  5. Exit            6. Change User");
+            Console.WriteLine("7. Filter Tasks");
             Console.WriteLine();
             string option = Prompt("Select an option: ");
 
@@ -129,6 +224,9 @@ public class ConsoleTaskView : ITaskView
                 case "6":
                     string user = Prompt("Enter username: ");
                     _service.ChangeUser(user);
+                    break;
+                case "7":
+                    ShowFilterMenu();
                     break;
                 default:
                     Console.WriteLine("Invalid option. Press any key to continue...");

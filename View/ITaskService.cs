@@ -6,7 +6,11 @@ public interface ITaskService
     void RemoveTask(int id);
     void ToggleTaskCompletion(int id);
 
-    void ChangeUser(string user); 
+    IEnumerable<TaskItem> GetTasksByPriority(string priority);
+    IEnumerable<TaskItem> GetTasksByStatus(string status);
+    IEnumerable<TaskItem> GetTasksByDateRange(DateTime? from, DateTime? to);
 
-    string CurrentUser {get;}
+    void ChangeUser(string user);
+
+    string CurrentUser { get; }
 }

@@ -19,6 +19,36 @@ public class TaskService : ITaskService
         }
     }
 
+    public IEnumerable<TaskItem> GetTasksByPriority(string priority)
+    {
+        foreach (var task in _tasks)
+        {
+            if (string.Equals(task.Priority, priority, StringComparison.OrdinalIgnoreCase))
+                yield return task;
+        }
+    }
+
+    public IEnumerable<TaskItem> GetTasksByStatus(string status)
+    {
+        foreach (var task in _tasks)
+        {
+            if (string.Equals(task.Row, status, StringComparison.OrdinalIgnoreCase))
+                yield return task;
+        }
+    }
+
+    public IEnumerable<TaskItem> GetTasksByDateRange(DateTime? from, DateTime? to)
+    {
+        foreach (var task in _tasks)
+        {
+            if (from.HasValue && task.Date < from.Value)
+                continue;
+            if (to.HasValue && task.Date > to.Value)
+                continue;
+            yield return task;
+        }
+    }
+
     private static string Prompt(string prompt)
     {
         Console.Write(prompt);
