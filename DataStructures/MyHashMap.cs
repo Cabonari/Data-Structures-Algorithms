@@ -1,14 +1,20 @@
-
 public class MyHashMap<T> : IMyCollection<T> where T : notnull
 {
     public Dictionary<T, T> Value { get; private set; }
 
     public MyHashMap(T data)
     {
-        Value = data.GetType()
-            .GetProperties()
-            .Where(p => p.PropertyType == typeof(T))
-            .ToDictionary(p => (T)p.GetValue(data)!, p => (T)p.GetValue(data)!);
+        var properties = data.GetType().GetProperties();
+
+        foreach (var p in properties)
+        {
+            if (p.PropertyType == typeof(T))
+            {
+                var raw = p.GetValue(data);
+
+                if (raw is T typed) Value[typed] = typed;
+            }
+        }
     }
 
     public MyHashMap()
