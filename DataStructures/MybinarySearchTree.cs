@@ -161,8 +161,26 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         {
             MyBinarySearchTree<T>? child = current.left ?? current.right;
 
-            if(parent.left == current) parent.left = child;
-            else parent.right = child;
+            if (parent == null)
+            {
+                if (child == null)
+                {
+                    value = default!;
+                    left = null;
+                    right = null;
+                }
+                else
+                {
+                    value = child.value;
+                    left = child.left;
+                    right = child.right;
+                }
+            }
+            else
+            {
+                if (parent.left == current) parent.left = child;
+                else parent.right = child;
+            }
         }
         else
         {
@@ -179,33 +197,6 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
 
             if (successorParent.left == successor) successorParent.left = successor.right;
             else successorParent.right = successor.right;
-
-            return;
-        }
-
-        MyBinarySearchTree<T>? child = current.left ?? current.right;
-
-        if (parent == null)
-        {
-            if (child == null)
-            {
-                value = default!;
-                left = null;
-                right = null;
-            }
-
-            else
-            {
-                value = child.value;
-                left = child.left;
-                right = child.right;
-            }
-        }
-
-        else
-        {
-            if (parent.left == current) parent.left = child;
-            else parent.right = child;
         }
     }
 
