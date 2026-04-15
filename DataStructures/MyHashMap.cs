@@ -68,12 +68,28 @@ public class MyHashMap<T> : IMyCollection<T> where T : notnull
 
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        throw new NotImplementedException();
+        if (Value.Count == 0)
+            throw new InvalidOperationException("Collection is empty.");
+
+        var enumerator = Value.Values.GetEnumerator();
+        enumerator.MoveNext();
+
+        R result = (R)(object)enumerator.Current;
+        while (enumerator.MoveNext())
+        {
+            result = accumulator(result, enumerator.Current);
+        }
+        return result;
     }
 
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        throw new NotImplementedException();
+        R result = initial;
+        foreach (var value in Value.Values)
+        {
+            result = accumulator(result, value);
+        }
+        return result;
     }
 
     public void Remove(T item)
@@ -83,7 +99,15 @@ public class MyHashMap<T> : IMyCollection<T> where T : notnull
 
     public void Sort(Comparison<T> comparison)
     {
-        throw new NotImplementedException();
+        var sortedEntries = Value
+            .OrderBy(item => item.Key, Comparer<T>.Create(comparison))
+            .ToList();
+
+        Value = new Dictionary<T, T>();
+        foreach (var item in sortedEntries)
+        {
+            Value[item.Key] = item.Value;
+        }
     }
 
     private class MyIterator : IMyIterator<T>
