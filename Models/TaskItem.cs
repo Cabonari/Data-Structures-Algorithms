@@ -6,5 +6,7 @@ public class TaskItem
     public string[]? Assignees { get; set; }
     public string Row { get; set; }
 
+    public int[] Dependecies { get; set; }
+
     public DateTime Date { get; set; }
 }

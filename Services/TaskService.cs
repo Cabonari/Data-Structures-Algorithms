@@ -55,7 +55,18 @@ public class TaskService : ITaskService
         return Console.ReadLine() ?? string.Empty;
     }
 
-    public void AddTask(string priority, string description, string[] assignees)
+    private static bool TryParseStatus(string row, out Status status)
+    {
+        if (string.Equals(row, "Doing", StringComparison.OrdinalIgnoreCase))
+        {
+            status = Status.InProgress;
+            return true;
+        }
+
+        return Enum.TryParse(row, true, out status);
+    }
+
+    public void AddTask(string priority, string description, string[] assignees, int[] dependencies)
     {
         int newId = 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
@@ -67,7 +78,8 @@ public class TaskService : ITaskService
             Description = description,
             Date = DateTime.Now,
             Assignees = assignees,
-            Row = "TODO"
+            Row = "TODO",
+            Dependecies = dependencies ?? new int[] { }
         };
         _tasks.Add(newTask);
         _repository.SaveTasks(_tasks);
@@ -100,6 +112,13 @@ public class TaskService : ITaskService
             {
                 string[] newAssigneesList = newAssignees.Split(", ");
                 task.Assignees = newAssigneesList.ToArray();
+            }
+
+            string newDependencies = Prompt($"\nEnter new dependencies (comma-separated, was '{string.Join(", ", task.Dependecies)}'): ");
+            if (newDependencies != string.Empty)
+            {
+                int[] newDependenciesList = newDependencies.Split(", ").Select(int.Parse).ToArray();
+                task.Dependecies = newDependenciesList;
             }
 
             _repository.SaveTasks(_tasks);
@@ -147,6 +166,35 @@ public class TaskService : ITaskService
             Console.WriteLine("You are not assigned to this task.");
             Console.ReadKey();
             return;
+        }
+
+        if (!TryParseStatus(task.Row, out var currentStatus))
+        {
+            Console.WriteLine("Current task status is invalid.");
+            Console.ReadKey();
+            return;
+        }
+
+        // Dependency check
+        foreach (int dependencyId in task.Dependecies)
+        {
+            var dependencyTask = _tasks.FindBy(dependencyId, (t, key) => t.Id.CompareTo(key));
+            if (dependencyTask != null)
+            {
+                if (!TryParseStatus(dependencyTask.Row, out var dependencyStatus))
+                {
+                    Console.WriteLine($"Dependency task {dependencyId} has an invalid status.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                if (dependencyStatus <= currentStatus)
+                {
+                    Console.WriteLine($"This task cannot be toggled until dependency task {dependencyId} reaches a higher status.");
+                    Console.ReadKey();
+                    return;
+                }
+            }
         }
 
         switch (task.Row)
