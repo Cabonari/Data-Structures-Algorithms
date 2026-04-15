@@ -68,6 +68,13 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description, string[] assignees, int[] dependencies)
     {
+        if(_tasks.Count >= 20)
+        {
+            Console.WriteLine("Task limit reached.");
+            Console.ReadKey();
+            return;
+        }
+
         int newId = 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
 
