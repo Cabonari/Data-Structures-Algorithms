@@ -1,7 +1,11 @@
 public class TaskService : ITaskService
 {
     private readonly ITaskRepository _repository;
-    private readonly IMyCollection<TaskItem> _tasks = new MyHashMap<TaskItem>();
+    private IMyCollection<TaskItem> _tasks = new MyArray<TaskItem>();
+    public IMyCollection<TaskItem> _oldTasks = new MyArray<TaskItem>();
+    private string _currentDataStructure = "Array";
+
+    public string CurrentDataStructure => _currentDataStructure;
 
     public string CurrentUser { get; private set; } = "";
 
@@ -68,7 +72,7 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description, string[] assignees, int[] dependencies)
     {
-        if(_tasks.Count >= 20)
+        if (_tasks.Count >= 20)
         {
             Console.WriteLine("Task limit reached.");
             Console.ReadKey();
@@ -232,5 +236,36 @@ public class TaskService : ITaskService
     {
         CurrentUser = user;
     }
+    public void ChooseDataStructure(int choice)
+    {
+        // Save current tasks to oldTasks before switching
+        _oldTasks = _tasks;
 
+        switch (choice)
+        {
+            case 2:
+                _tasks = new MyLinkedList<TaskItem>();
+                _currentDataStructure = "Linked List";
+                break;
+            case 3:
+                _tasks = new MyBinarySearchTree<TaskItem>();
+                _currentDataStructure = "Binary Search Tree";
+                break;
+            case 4:
+                _tasks = new MyHashMap<TaskItem>();
+                _currentDataStructure = "HashMap";
+                break;
+            case 1:
+            default:
+                _tasks = new MyArray<TaskItem>();
+                _currentDataStructure = "Array";
+                break;
+        }
+        // Migrate tasks to new data structure
+        foreach (var task in _oldTasks)
+        {
+            _tasks.Add(task);
+        }
+
+    }
 }

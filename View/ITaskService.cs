@@ -5,6 +5,8 @@ public interface ITaskService
     void UpdateTask(int id);
     void RemoveTask(int id);
     void ToggleTaskCompletion(int id);
+    void ChooseDataStructure(int choice);
+    string CurrentDataStructure { get; }
 
     IEnumerable<TaskItem> GetTasksByPriority(string priority);
     IEnumerable<TaskItem> GetTasksByStatus(string status);
