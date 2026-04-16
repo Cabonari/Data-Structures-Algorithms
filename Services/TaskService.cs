@@ -68,7 +68,7 @@ public class TaskService : ITaskService
 
     public void AddTask(string priority, string description, string[] assignees, int[] dependencies)
     {
-        if(_tasks.Count >= 20)
+        if (_tasks.Count >= 20)
         {
             Console.WriteLine("Task limit reached.");
             Console.ReadKey();
@@ -99,8 +99,8 @@ public class TaskService : ITaskService
         if (task != null)
         {
 
-            // Permission Check 
-            if (!task.Assignees.Contains(CurrentUser))
+            // Permission Check
+            if (task.Assignees != null && task.Assignees.Length > 0 && !task.Assignees.Contains(CurrentUser))
             {
                 Console.WriteLine("You are not assigned to this task.");
                 Console.ReadKey();
@@ -143,8 +143,8 @@ public class TaskService : ITaskService
             return;
         }
 
-        // Permission check 
-        if (!task.Assignees.Contains(CurrentUser))
+        // Permission check
+        if (task.Assignees != null && task.Assignees.Length > 0 && !task.Assignees.Contains(CurrentUser))
         {
             Console.WriteLine("You are not assigned to this task.");
             Console.ReadKey();
@@ -167,8 +167,8 @@ public class TaskService : ITaskService
             return;
         }
 
-        // Permission check 
-        if (!task.Assignees.Contains(CurrentUser))
+        // Permission check
+        if (task.Assignees != null && task.Assignees.Length > 0 && !task.Assignees.Contains(CurrentUser))
         {
             Console.WriteLine("You are not assigned to this task.");
             Console.ReadKey();
