@@ -238,7 +238,7 @@ public class TaskService : ITaskService
     }
     public void ChooseDataStructure(int choice)
     {
-        // Save current tasks to oldTasks before switching
+
         _oldTasks = _tasks;
 
         switch (choice)
@@ -261,7 +261,7 @@ public class TaskService : ITaskService
                 _currentDataStructure = "Array";
                 break;
         }
-        // Migrate tasks to new data structure
+
         foreach (var task in _oldTasks)
         {
             _tasks.Add(task);
