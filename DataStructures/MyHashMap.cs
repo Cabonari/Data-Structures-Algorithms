@@ -1,14 +1,20 @@
-
 public class MyHashMap<T> : IMyCollection<T> where T : notnull
 {
     public Dictionary<T, T> Value { get; private set; }
 
     public MyHashMap(T data)
     {
-        Value = data.GetType()
-            .GetProperties()
-            .Where(p => p.PropertyType == typeof(T))
-            .ToDictionary(p => (T)p.GetValue(data)!, p => (T)p.GetValue(data)!);
+        var properties = data.GetType().GetProperties();
+
+        foreach (var p in properties)
+        {
+            if (p.PropertyType == typeof(T))
+            {
+                var raw = p.GetValue(data);
+
+                if (raw is T typed) Value[typed] = typed;
+            }
+        }
     }
 
     public MyHashMap()
@@ -27,12 +33,30 @@ public class MyHashMap<T> : IMyCollection<T> where T : notnull
 
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        throw new NotImplementedException();
+        var result = new MyHashMap<T>();
+
+        foreach (var item in Value.Values)
+        {
+            if (predicate(item))
+            {
+                result.Add(item);
+            }
+        }
+
+        return result;
     }
 
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
-        throw new NotImplementedException();
+        foreach (var item in Value.Values)
+        {
+            if (comparer(item, key) == 0)
+            {
+                return item;
+            }
+        }
+
+        return default;
     }
 
     public IEnumerator<T> GetEnumerator()
@@ -76,7 +100,7 @@ public class MyHashMap<T> : IMyCollection<T> where T : notnull
 
     public void Remove(T item)
     {
-        throw new NotImplementedException();
+        Value.Remove(item);
     }
 
     public void Sort(Comparison<T> comparison)
