@@ -82,28 +82,28 @@ public class TaskService : ITaskService
         int newId = 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
 
-        if(checkValidPriority(priority) is not null)
+        if (checkValidPriority(priority) is not null)
         {
             Console.WriteLine(checkValidPriority(priority));
             Console.ReadKey();
             return;
         }
 
-        if(checkValidDescription(description) is not null)
+        if (checkValidDescription(description) is not null)
         {
             Console.WriteLine(checkValidDescription(description));
             Console.ReadKey();
             return;
         }
 
-        if(checkValidAssignees(assignees) is not null)
+        if (checkValidAssignees(assignees) is not null)
         {
             Console.WriteLine(checkValidAssignees(assignees));
             Console.ReadKey();
             return;
         }
 
-        if(checkValidDependencies(dependencies) is not null)
+        if (checkValidDependencies(dependencies) is not null)
         {
             Console.WriteLine(checkValidDependencies(dependencies));
             Console.ReadKey();
@@ -142,7 +142,7 @@ public class TaskService : ITaskService
             string newPriority = Prompt($"\nEnter new priority (was '{task.Priority}'): ");
             if (newPriority != string.Empty)
             {
-                if(checkValidPriority(newPriority) is not null)
+                if (checkValidPriority(newPriority) is not null)
                 {
                     Console.WriteLine(checkValidPriority(newPriority));
                     Console.ReadKey();
@@ -155,7 +155,7 @@ public class TaskService : ITaskService
             string newDescription = Prompt($"\nEnter new description (was '{task.Description}'): ");
             if (newDescription != string.Empty)
             {
-                if(checkValidDescription(newDescription) is not null)
+                if (checkValidDescription(newDescription) is not null)
                 {
                     Console.WriteLine(checkValidDescription(newDescription));
                     Console.ReadKey();
@@ -170,7 +170,7 @@ public class TaskService : ITaskService
             {
                 string[] newAssigneesList = newAssignees.Split(", ");
 
-                if(checkValidAssignees(newAssigneesList) is not null)
+                if (checkValidAssignees(newAssigneesList) is not null)
                 {
                     Console.WriteLine(checkValidAssignees(newAssigneesList));
                     Console.ReadKey();
@@ -185,7 +185,7 @@ public class TaskService : ITaskService
             {
                 int[] newDependenciesList = newDependencies.Split(", ").Select(int.Parse).ToArray();
 
-                if(checkValidDependencies(newDependenciesList) is not null)
+                if (checkValidDependencies(newDependenciesList) is not null)
                 {
                     Console.WriteLine(checkValidDependencies(newDependenciesList));
                     Console.ReadKey();
@@ -298,6 +298,55 @@ public class TaskService : ITaskService
     public void ChangeUser(string user)
     {
         CurrentUser = user;
+    }
+
+    private string checkValidPriority(string priority)
+    {
+        var validPriorities = Enum.GetNames<Priority>();
+        if (!validPriorities.Contains(priority, StringComparer.OrdinalIgnoreCase)) return "\nInvalid priority.";
+        return null;
+    }
+
+    private string checkValidDescription(string description)
+    {
+        if (description.Length == 0) return "\nInvalid description.";
+        return null;
+    }
+
+    private string checkValidAssignees(string[] assignees)
+    {
+        if (assignees.Length > 0)
+        {
+            string[] duplicateAssignees = new string[assignees.Length];
+
+            for (int i = 0; i < assignees!.Length; i++)
+            {
+                if (duplicateAssignees.Contains(assignees[i])) return $"Cannot assign {assignees[i]} multiple times.";
+                else duplicateAssignees[i] = assignees[i];
+            }
+        }
+        return null;
+    }
+
+    private string checkValidDependencies(int[] dependencies)
+    {
+        if (dependencies.Length > 0)
+        {
+            foreach (var dependencyId in dependencies)
+            {
+                if (_tasks.FindBy(dependencyId, (t, key) => t.Id.CompareTo(key)) == null) return $"Dependency task {dependencyId} does not exist.";
+            }
+
+            int[] duplicateDependencies = new int[dependencies.Length];
+
+            for (int i = 0; i < dependencies!.Length; i++)
+            {
+                if (duplicateDependencies.Contains(dependencies[i])) return $"Cannot specify dependency {dependencies[i]} multiple times.";
+                else duplicateDependencies[i] = dependencies[i];
+            }
+        }
+
+        return null;
     }
 
     public void ChooseDataStructure(int choice)
