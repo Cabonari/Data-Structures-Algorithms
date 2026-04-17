@@ -82,6 +82,34 @@ public class TaskService : ITaskService
         int newId = 1;
         while (_tasks.FindBy(newId, (t, key) => t.Id.CompareTo(key)) != null) newId++;
 
+        if(checkValidPriority(priority) is not null)
+        {
+            Console.WriteLine(checkValidPriority(priority));
+            Console.ReadKey();
+            return;
+        }
+
+        if(checkValidDescription(description) is not null)
+        {
+            Console.WriteLine(checkValidDescription(description));
+            Console.ReadKey();
+            return;
+        }
+
+        if(checkValidAssignees(assignees) is not null)
+        {
+            Console.WriteLine(checkValidAssignees(assignees));
+            Console.ReadKey();
+            return;
+        }
+
+        if(checkValidDependencies(dependencies) is not null)
+        {
+            Console.WriteLine(checkValidDependencies(dependencies));
+            Console.ReadKey();
+            return;
+        }
+
         var newTask = new TaskItem
         {
             Id = newId,
@@ -92,6 +120,7 @@ public class TaskService : ITaskService
             Row = "TODO",
             Dependecies = dependencies ?? new int[] { }
         };
+
         _tasks.Add(newTask);
         _repository.SaveTasks(_tasks);
     }
@@ -102,26 +131,52 @@ public class TaskService : ITaskService
 
         if (task != null)
         {
-
             // Permission Check 
-            if (!task.Assignees.Contains(CurrentUser))
+            if (task.Assignees.Contains(CurrentUser))
             {
                 Console.WriteLine("You are not assigned to this task.");
                 Console.ReadKey();
                 return;
             }
 
-
             string newPriority = Prompt($"\nEnter new priority (was '{task.Priority}'): ");
-            if (newPriority != string.Empty) task.Priority = newPriority;
+            if (newPriority != string.Empty)
+            {
+                if(checkValidPriority(newPriority) is not null)
+                {
+                    Console.WriteLine(checkValidPriority(newPriority));
+                    Console.ReadKey();
+                    return;
+                }
+
+                task.Priority = newPriority;
+            }
 
             string newDescription = Prompt($"\nEnter new description (was '{task.Description}'): ");
-            if (newDescription != string.Empty) task.Description = newDescription;
+            if (newDescription != string.Empty)
+            {
+                if(checkValidDescription(newDescription) is not null)
+                {
+                    Console.WriteLine(checkValidDescription(newDescription));
+                    Console.ReadKey();
+                    return;
+                }
+
+                task.Description = newDescription;
+            }
 
             string newAssignees = Prompt($"\nEnter new assignees'): ");
             if (newAssignees != string.Empty)
             {
                 string[] newAssigneesList = newAssignees.Split(", ");
+
+                if(checkValidAssignees(newAssigneesList) is not null)
+                {
+                    Console.WriteLine(checkValidAssignees(newAssigneesList));
+                    Console.ReadKey();
+                    return;
+                }
+
                 task.Assignees = newAssigneesList.ToArray();
             }
 
@@ -129,6 +184,14 @@ public class TaskService : ITaskService
             if (newDependencies != string.Empty)
             {
                 int[] newDependenciesList = newDependencies.Split(", ").Select(int.Parse).ToArray();
+
+                if(checkValidDependencies(newDependenciesList) is not null)
+                {
+                    Console.WriteLine(checkValidDependencies(newDependenciesList));
+                    Console.ReadKey();
+                    return;
+                }
+
                 task.Dependecies = newDependenciesList;
             }
 
@@ -148,7 +211,7 @@ public class TaskService : ITaskService
         }
 
         // Permission check 
-        if (!task.Assignees.Contains(CurrentUser))
+        if (task.Assignees.Contains(CurrentUser))
         {
             Console.WriteLine("You are not assigned to this task.");
             Console.ReadKey();
@@ -172,7 +235,7 @@ public class TaskService : ITaskService
         }
 
         // Permission check 
-        if (!task.Assignees.Contains(CurrentUser))
+        if (task.Assignees.Contains(CurrentUser))
         {
             Console.WriteLine("You are not assigned to this task.");
             Console.ReadKey();
