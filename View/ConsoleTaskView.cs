@@ -8,6 +8,7 @@ public class ConsoleTaskView : ITaskView
     public ConsoleTaskView(ITaskService service)
     {
         _service = service;
+
     }
 
     private static void FullClear()
@@ -169,15 +170,19 @@ public class ConsoleTaskView : ITaskView
 
 
             // Show user 
-            Console.SetCursorPosition(0, windowHeight - 8);
+            Console.SetCursorPosition(0, windowHeight - 9);
             Console.WriteLine($"Current user: {_service.CurrentUser}");
+
+            Console.SetCursorPosition(0, windowHeight - 8);
+            Console.WriteLine($"Data structure: {_service.CurrentDataStructure}");
+
 
             // Menu 
             Console.SetCursorPosition(0, windowHeight - 8);
             Console.WriteLine("\n\nOptions:");
             Console.WriteLine("1. Add Task     2. Update Task     3. Remove Task");
             Console.WriteLine("4. Toggle Task  5. Exit            6. Change User");
-            Console.WriteLine("7. Filter Tasks");
+            Console.WriteLine("7. Filter Tasks 8. Change Data Structure");
             Console.WriteLine();
             string option = Prompt("Select an option: ");
 
@@ -231,6 +236,29 @@ public class ConsoleTaskView : ITaskView
                     break;
                 case "7":
                     ShowFilterMenu();
+                    break;
+                case "8":
+                    Console.WriteLine("Choose a data structure to store tasks:"
+                        + "\n1. Array (default)"
+                        + "\n2. Linked List"
+                        + "\n3. Binary Search Tree"
+                        + "\n4. HashMap");
+                    string choice = Console.ReadLine() ?? "1";
+                    switch (choice)
+                    {
+                        case "2":
+                            _service.ChooseDataStructure(2);
+                            break;
+                        case "3":
+                            _service.ChooseDataStructure(3);
+                            break;
+                        case "4":
+                            _service.ChooseDataStructure(4);
+                            break;
+                        default:
+                            _service.ChooseDataStructure(1);
+                            break;
+                    }
                     break;
                 default:
                     Console.WriteLine("Invalid option. Press any key to continue...");

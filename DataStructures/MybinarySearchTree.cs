@@ -1,20 +1,28 @@
-public class MyBinarySearchTree<T> : IMyCollection<T>
+public class MyBinarySearchTree<T> : IMyCollection<T> where T : class
 {
     public T value;
     public MyBinarySearchTree<T>? left;
     public MyBinarySearchTree<T>? right;
 
-    public MyBinarySearchTree(T data)
+    private readonly Comparer<T> _comparer;
+    private bool _isEmpty;
+
+    public MyBinarySearchTree(T data, Comparer<T>? comparer = null)
     {
         value = data;
+        _comparer = comparer ?? Comparer<T>.Default;
+        _isEmpty = false;
     }
 
-    public MyBinarySearchTree()
+    public MyBinarySearchTree(Comparer<T>? comparer = null)
     {
-        //voor lege tree
+        _comparer = comparer ?? Comparer<T>.Default;
+        _isEmpty = true;
     }
 
-    public int Count => 1 + (left?.Count ?? 0) + (right?.Count ?? 0);
+    // OLD empty constructor removed — the one above handles it via optional parameter (Comparer<T>? comparer = null)
+
+    public int Count => _isEmpty ? 0 : 1 + (left?.Count ?? 0) + (right?.Count ?? 0);
 
     private bool dirty;
     public bool Dirty { get => dirty; set => dirty = value; }
@@ -22,23 +30,24 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
     // Julian 
     public void Add(T item)
     {
-        if (value == null)
+        if (_isEmpty)
         {
             value = item;
+            _isEmpty = false;
             return;
         }
 
-        if (Comparer<T>.Default.Compare(item, value) < 0)
+        if (_comparer.Compare(item, value) < 0)
         {
             if (left == null)
-                left = new MyBinarySearchTree<T>(item);
+                left = new MyBinarySearchTree<T>(item, _comparer);
             else
                 left.Add(item);
         }
         else
         {
             if (right == null)
-                right = new MyBinarySearchTree<T>(item);
+                right = new MyBinarySearchTree<T>(item, _comparer);
             else
                 right.Add(item);
         }
@@ -54,7 +63,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
             if (predicate(item))
             {
                 if (result == null)
-                    result = new MyBinarySearchTree<T>(item);
+                    result = new MyBinarySearchTree<T>(item, _comparer);
                 else
                     result.Add(item);
             }
@@ -62,7 +71,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
 
         void Traverse(MyBinarySearchTree<T>? node)
         {
-            if (node == null) return;
+            if (node == null || node._isEmpty) return;
 
             AddIfMatch(node.value);
             Traverse(node.left);
@@ -77,19 +86,23 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
     // Julian 
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
+        if (_isEmpty) return default;
+
         int cmp = comparer(value, key);
 
         if (cmp == 0)
             return value;
         else if (cmp > 0)
-            return left.FindBy(key, comparer);
+            return left != null ? left.FindBy(key, comparer) : default;
         else
-            return right.FindBy(key, comparer);
+            return right != null ? right.FindBy(key, comparer) : default;
     }
 
     // Rushil 
     public IEnumerator<T> GetEnumerator()
     {
+        if (_isEmpty) yield break;
+
         if (left != null)
         {
             foreach (var item in left)
@@ -104,6 +117,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
                 yield return item;
         }
     }
+
     // Rushil 
     public IMyIterator<T> GetMyIterator()
     {
@@ -151,7 +165,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         {
             parent = current;
 
-            if (Comparer<T>.Default.Compare(item, current.value) < 0) current = current.left;
+            if (_comparer.Compare(item, current.value) < 0) current = current.left;
             else current = current.right;
         }
 
@@ -168,6 +182,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
                     value = default!;
                     left = null;
                     right = null;
+                    _isEmpty = true;
                 }
                 else
                 {
@@ -200,24 +215,22 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         }
     }
 
-    // rushil 
+    // Rushil 
     public void Sort(Comparison<T> comparison)
     {
         int count = Count;
         T[] items = new T[count];
         int index = 0;
 
-
         void FillArray(MyBinarySearchTree<T>? node)
         {
-            if (node == null) return;
+            if (node == null || node._isEmpty) return;
 
             FillArray(node.left);
             items[index++] = node.value;
             FillArray(node.right);
         }
         FillArray(this);
-
 
         void MergeSort(T[] array, int left, int right)
         {
@@ -226,7 +239,6 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
             int mid = (left + right) / 2;
 
             MergeSort(array, left, mid);
-
             MergeSort(array, mid + 1, right);
             Merge(array, left, mid, right);
         }
@@ -267,12 +279,12 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         left = null;
         right = null;
         value = default!;
+        _isEmpty = true;
 
         foreach (var item in items)
         {
             Add(item);
         }
-
     }
 
 
@@ -291,7 +303,7 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
 
             void Fill(MyBinarySearchTree<T>? node)
             {
-                if (node == null) return;
+                if (node == null || node._isEmpty) return;
 
                 Fill(node.left);
                 items[i++] = node.value;
@@ -320,5 +332,3 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         }
     }
 }
-
-
