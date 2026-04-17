@@ -1,4 +1,4 @@
-public class MyBinarySearchTree<T> : IMyCollection<T>
+public class MyBinarySearchTree<T> : IMyCollection<T> where T : class
 {
     public T value;
     public MyBinarySearchTree<T>? left;
@@ -19,6 +19,8 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
         _comparer = comparer ?? Comparer<T>.Default;
         _isEmpty = true;
     }
+
+    // OLD empty constructor removed — the one above handles it via optional parameter (Comparer<T>? comparer = null)
 
     public int Count => _isEmpty ? 0 : 1 + (left?.Count ?? 0) + (right?.Count ?? 0);
 
@@ -84,14 +86,16 @@ public class MyBinarySearchTree<T> : IMyCollection<T>
     // Julian 
     public T? FindBy<K>(K key, Func<T, K, int> comparer)
     {
+        if (_isEmpty) return default;
+
         int cmp = comparer(value, key);
 
         if (cmp == 0)
             return value;
         else if (cmp > 0)
-            return left.FindBy(key, comparer);
+            return left != null ? left.FindBy(key, comparer) : default;
         else
-            return right.FindBy(key, comparer);
+            return right != null ? right.FindBy(key, comparer) : default;
     }
 
     // Rushil 
