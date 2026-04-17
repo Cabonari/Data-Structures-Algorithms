@@ -236,9 +236,9 @@ public class TaskService : ITaskService
     {
         CurrentUser = user;
     }
+
     public void ChooseDataStructure(int choice)
     {
-
         _oldTasks = _tasks;
 
         switch (choice)
@@ -248,7 +248,8 @@ public class TaskService : ITaskService
                 _currentDataStructure = "Linked List";
                 break;
             case 3:
-                _tasks = new MyBinarySearchTree<TaskItem>();
+                var comparer = Comparer<TaskItem>.Create((a, b) => a.Id.CompareTo(b.Id));
+                _tasks = new MyBinarySearchTree<TaskItem>(comparer);
                 _currentDataStructure = "Binary Search Tree";
                 break;
             case 4:
@@ -266,6 +267,5 @@ public class TaskService : ITaskService
         {
             _tasks.Add(task);
         }
-
     }
 }
