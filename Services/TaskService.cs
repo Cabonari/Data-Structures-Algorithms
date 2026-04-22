@@ -132,7 +132,7 @@ public class TaskService : ITaskService
         if (task != null)
         {
             // Permission Check 
-            if (task.Assignees.Contains(CurrentUser))
+            if (!task.Assignees.Contains(CurrentUser))
             {
                 Console.WriteLine("You are not assigned to this task.");
                 Console.ReadKey();
@@ -211,7 +211,7 @@ public class TaskService : ITaskService
         }
 
         // Permission check 
-        if (task.Assignees.Contains(CurrentUser))
+        if (!(task.Assignees.Contains(CurrentUser) || (string.IsNullOrEmpty(CurrentUser) && task.Assignees.Length == 0)))
         {
             Console.WriteLine("You are not assigned to this task.");
             Console.ReadKey();
@@ -235,7 +235,7 @@ public class TaskService : ITaskService
         }
 
         // Permission check 
-        if (task.Assignees.Contains(CurrentUser))
+        if (!task.Assignees.Contains(CurrentUser))
         {
             Console.WriteLine("You are not assigned to this task.");
             Console.ReadKey();
