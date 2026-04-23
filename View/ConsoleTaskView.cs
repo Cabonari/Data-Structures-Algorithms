@@ -197,9 +197,12 @@ public class ConsoleTaskView : ITaskView
                     string[] assignees = string.IsNullOrWhiteSpace(assigneesInput)
                         ? []
                         : assigneesInput.Split(", ");
-                    int[] dependencies = string.IsNullOrWhiteSpace(dependenciesInput)
+
+                    string trimmedDependencies = dependenciesInput.Replace(",", ", ").Trim();
+
+                    int[] dependencies = string.IsNullOrWhiteSpace(trimmedDependencies)
                         ? []
-                        : dependenciesInput.Split(", ").Select(int.Parse).ToArray();
+                        : trimmedDependencies.Split(", ").Select(int.Parse).ToArray();
                     _service.AddTask(priority, description, assignees, dependencies);
                     break;
 
