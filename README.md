@@ -65,3 +65,16 @@ MyHashMap.cs: Add, GetMyIterator, GetEnumerator,
 
 
 # Bijdrage Jullian: 
+
+Gewerkt aan de volgende features:
+Switchen van data structures
+Deels tests schrijven voor MyArrayTests.cs
+Tasks additions bij TaskService.cs
+Tasks display(begin)
+
+Methodes:
+
+MyArray.cs: Add, Remove, Findby
+MyLinkedList.cs: Add, Remove, Filter, Findby
+MybinarySearchTree.cs: Add, FindBy, Filter
+MyHashMap.cs: Reduce, Sort
