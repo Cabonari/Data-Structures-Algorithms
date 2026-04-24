@@ -17,7 +17,7 @@ public class MyArray<T> : IMyCollection<T>
     {
         if (_size >= _array.Length) return;
         _array[_size] = item;
-        
+
         _size++;
     }
 
@@ -59,9 +59,10 @@ public class MyArray<T> : IMyCollection<T>
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
         int counter = 0;
-        for (int i = 0; i < _array.Length; i++)
+
+        for (int i = 0; i < _size; i++)
         {
-            if (predicate(_array[i]) == true)
+            if (predicate(_array[i]))
             {
                 counter++;
             }
@@ -69,17 +70,21 @@ public class MyArray<T> : IMyCollection<T>
 
         var filteredarray = new T[counter];
         int index = 0;
-        for (int i = 0; i < _array.Length; i++)
+
+        for (int i = 0; i < _size; i++)
         {
-            if (predicate(_array[i]) == true)
+            if (predicate(_array[i]))
             {
                 filteredarray[index++] = _array[i];
             }
-
         }
+
         var result = new MyArray<T>(counter);
+
+        // assign internal array safely
         result._array = filteredarray;
-        result._size = Count;
+        result._size = counter;
+
         return result;
 
     }
@@ -87,7 +92,7 @@ public class MyArray<T> : IMyCollection<T>
     //sort function
     public void Sort(Comparison<T> comparison)
     {
-        for (int i = 0; i < _size - 1; i++)
+        for (int i = 1; i < _size; i++)
         {
             T key = _array[i];
             int j = i - 1;
@@ -100,6 +105,7 @@ public class MyArray<T> : IMyCollection<T>
 
             _array[j + 1] = key;
         }
+
     }
 
     //reset function
