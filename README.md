@@ -26,13 +26,18 @@ Requirements needed to run the application:
 How to run the application: 
 - Navigate to the 'bin/Debug/net9.0/Data-Strucutres-Algorithms.exe' and run this file.
 
+How to run the tests: 
+- Select terminal in vscode. and write in the terminal the following commands: 
+1. cd MyTests
+2. dotnet test 
+
 
 # Bijdrage Rushil: 
 
- 
 Gewerkt aan de volgende features: 
 - Enforce per-user modification rights 
 - Filter or list tasks by priority, status or creation date
+- Write test cases to validate the basic functional requirements 
 
 Methodes: 
 
