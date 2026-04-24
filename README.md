@@ -49,5 +49,19 @@ MyHashMap.cs: Filter, Findby, Remove
 
 # Bijdrage Jing: 
 
+Gewerkt aan de volgende features:
+- Add, remove and toggle tasks (complete task / incomplete task).
+- Tasks grouped into columns TODO/InProgress/Review/Done.
+- Move tasks across stages to simulate real workflow.
+- Assign tasks to team members.
+- Allow tasks to depend on others; a task unlocks only when prerequisites are completed.
+
+Methodes:
+
+MyArray.cs: Sort, Reset
+MyLinkedList.cs: Sort, GetEnumerator
+MybinarySearchTree.cs: Remove
+MyHashMap.cs: Add, GetMyIterator, GetEnumerator,
+
 
 # Bijdrage Jullian: 
