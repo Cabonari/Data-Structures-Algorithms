@@ -25,3 +25,24 @@ Requirements needed to run the application:
 
 How to run the application: 
 - Navigate to the 'bin/Debug/net9.0/Data-Strucutres-Algorithms.exe' and run this file.
+
+
+# Bijdrage Rushil: 
+
+ 
+Gewerkt aan de volgende features: 
+- Enforce per-user modification rights 
+- Filter or list tasks by priority, status or creation date
+
+Methodes: 
+
+MyArray.cs: Filter(), Reduce (with and without initial) 
+MyLinkedList.cs: Reset, Reduce (with and without initial) 
+MybinarySearchTree.cs: GetEnumerator, GetMyIterator, Sort, Reduce (with and without initial)
+MyHashMap.cs: Filter, Findby, Remove 
+
+
+# Bijdrage Jing: 
+
+
+# Bijdrage Jullian: 
